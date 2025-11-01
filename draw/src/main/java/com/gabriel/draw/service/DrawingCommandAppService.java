@@ -1,6 +1,9 @@
 package com.gabriel.draw.service;
 
 import com.gabriel.draw.command.AddShapeCommand;
+import com.gabriel.draw.command.DeleteShapeCommand;
+import com.gabriel.draw.command.MoveShapeCommand;
+import com.gabriel.draw.command.ScaleShapeCommand;
 import com.gabriel.draw.command.SetDrawModeCommand;
 import com.gabriel.drawfx.DrawMode;
 import com.gabriel.drawfx.ShapeMode;
@@ -86,7 +89,8 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void move(Shape shape, Point start, Point end) {
-        appService.move(shape,start, end);
+        Command command = new MoveShapeCommand(appService, shape, start, end);
+        CommandService.ExecuteCommand(command);
     }
 
     @Override
@@ -101,7 +105,8 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void scale(Shape shape, Point start, Point end) {
-        appService.scale(shape, start, end);
+        Command command = new ScaleShapeCommand(appService, shape, start, end);
+        CommandService.ExecuteCommand(command);
     }
 
     @Override
@@ -117,7 +122,8 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void delete(Shape shape) {
-        appService.delete(shape);
+        Command command = new DeleteShapeCommand(appService, shape);
+        CommandService.ExecuteCommand(command);
     }
 
     @Override

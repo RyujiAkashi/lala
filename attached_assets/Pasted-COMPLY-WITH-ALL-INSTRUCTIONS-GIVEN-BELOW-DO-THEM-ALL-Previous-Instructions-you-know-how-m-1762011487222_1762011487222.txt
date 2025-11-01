@@ -1,0 +1,100 @@
+COMPLY WITH ALL INSTRUCTIONS GIVEN BELOW:
+(DO THEM ALL)
+
+
+Previous Instructions:
+you know how microsoft paint allows me to modify shapes i add? like scale, move, strectch? i want you to do something like tha too. using 8 handles for rectangle and ellips, while line only has 2 handles.
+selectcommand
+- i should be able to switch modes from draw mode or whatever to select command on the press of a button
+- it selects a shape then the handles show up and it allows me to modify the shape when i press on the handles  while i should be able to move the shape if i press the middle.
+- it should function using a searchservice
+toolbar and menu bar
+- remove the move and scale options, replace it with a select option
+searchservice
+- add a search radius for the handles when a shape is selected so i don't need to press and drag a specific pixel for me to reshape it.
+selectionmode
+- for handles, it's not suppposed to be in the actioncommand. it should be in this class.
+- allows me to identify handles that allows me reshape and stretch according to the specifc handle i pressed with a locked pivot point on the opposite side/counterpart of the handler.
+"select" case in drawingcontorller should allow me to search shapes in the panel when i select a certain shape
+arrange the functions and logic behind the commands/services in their appropriate classes for cleanliness.
+make the undo, redo, and delete functions work on resizing/stretching and moving
+
+make sure the app still functions as is. i can still set colors, set fills, return to draw mode, etc.
+
+
+
+
+A new set of instructions:
+
+A personalized splash screen showing your picture and a button that launches the main application.   10%
+Implement the property sheet to show the properties of the selected shape and the ability to modify these  properties via the property sheet.    40%
+Implement the undo and redo functions for the undoable actions to include: setting the value of all shape properties,  creating, deleting the shape  40%
+Enhancements to improve the look, feel experience.  10%
+
+
+the property sheet table containg the things in my photo 
+- right hand side 
+- should update whenever I selected something
+- i should also be able to modify the properties of the selected item (text, shape, image)
+- a separate folder from draw and drawfx
+- all things relating to the property sheet table should be encoded in here
+- event listener listens to any changes made in the property sheet, and will modify the selected text, shape, or image
+-  whenever a property is not in use, it should not show up at all.
+list of properties: 
+- shape type
+- current shape
+- fore color
+- fill color
+- start color (for gradient)
+- end color (for gradient)
+- Start x
+- Start y
+- End x
+- End y
+- IsGradient (checkbox)
+- Is visible (checkbox)
+- Float
+- Text
+- Image
+- Font family
+- Font style
+- Font Size
+
+there should be an x, y coordinate property that shows the current location of the cursor (status bar)
+- two text fields with x and y coordinaate
+- located on the bottom
+
+main panel
+- should have scroll wheels
+
+setfill, setcolor 
+- should have all of the color selector functions working, such as the transparency, color, etc.
+
+inserting images
+- i should be able to treat imagessimilar to shapes in terms of resizing and reshaping
+- i should be able to insert images using a button in the toolbar and in the menubar
+
+inserting text
+- i should be able to select fonts, change font size, change text style, etc.
+ (using a separate button in the toolbar; along with a dropdown option in the properties of the menu bar)
+- i should be also be able to resize or reshape it
+
+the logic shoud be designated to their respective classes, services, etc.
+- they shouldn't be all bunched up in the one class
+- assign them accordingly and use their pre made functions in their respective classes as much as possible
+- what i  want is for the logic to be hidden (i just need to call on them for it to work)
+- making it readable and understandabe
+
+
+Professor instructions:
+Using the given project as the basis implement the following
+
+A personalized splash screen showing your picture and a button that launches the main application.   10%
+Implement the property sheet to show the properties of the selected shape and the ability to modify these  properties via the property sheet.    40%
+Implement the undo and redo functions for the undoable actions to include: setting the value of all shape properties,  creating, deleting the shape  40%
+Enhancements to improve the look, feel experience.  10%
+
+New Classes:
+ImageFileService
+XmlDocumentService
+SplashFrame

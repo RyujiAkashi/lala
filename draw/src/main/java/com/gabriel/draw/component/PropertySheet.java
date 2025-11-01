@@ -197,7 +197,7 @@ public class PropertySheet extends PropertyPanel {
                 )
         );
         ActionProperty prop9;
-        prop9 = new ActionProperty("Press me",
+        prop9 = new ActionProperty("Press me", "Press me",
                 () -> {
                     System.out.println("Pressed");
                 });

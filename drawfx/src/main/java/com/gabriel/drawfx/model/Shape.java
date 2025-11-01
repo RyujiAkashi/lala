@@ -1,6 +1,7 @@
 package com.gabriel.drawfx.model;
 
 import com.gabriel.drawfx.SelectionMode;
+import com.gabriel.drawfx.ShapeMode;
 import com.gabriel.drawfx.renderer.Renderer;
 import lombok.Data;
 
@@ -11,6 +12,7 @@ public abstract class Shape {
     boolean selected = false;
     boolean visible = true;
     private SelectionMode selectionMode = SelectionMode.None;
+    private ShapeMode shapeMode = ShapeMode.Rectangle;
     private int r = 2;
     private int id = 0;
     private Point location;

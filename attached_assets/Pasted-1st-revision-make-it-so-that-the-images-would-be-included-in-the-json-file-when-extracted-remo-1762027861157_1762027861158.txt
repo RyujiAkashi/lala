@@ -1,0 +1,110 @@
+1st revision
+- make it so that the images would be included in the json file when extracted
+- remove unnecessary properties in the property sheet
+- add a tools dropdown on the menu and move the select function inside it
+- add the font function in the properties menu too
+- create an insert dropdown in the menu bar and move the text and image functions inside it
+- the property sheet should only allow changes to things that could be changed such as colors, x and y values, gradient, width, things like that
+- the property sheet should also update the values whenever something is pressed (i.e. an ellipse was selected. the property sheet should display current shape = ellipse, object type = shape. things like that)
+- the fill and select color should also be included in the toolbar
+- undo and redo should work for everything 
+- undo, redo, and save should be disabled when nothing has happened yet
+- there should be a delete button too which deletes shapes, images, text, etc.
+- needs to fix rendering when moving and reshaping
+- needs to be able to edit, move, and reshape the text
+- the rendering of the outline when a shape, image, or text is selected should be visible
+- the line should only have to handles (one on each endpoint)
+- improve the looks and cleanliness too
+
+Proffesor Instructions:
+CSS123 Final Project
+Project Requirements - these were recorded during the 3 meetings of discussing how the Final Project would be implemented, and transcribed to texts, then summarized.
+1. Core Architecture
+Project Type: Java Maven Project.
+Pattern: You must strictly follow the Model-View-Controller (MVC) pattern.
+Separation of Concerns:
+Model: Holds all data (shape lists, properties). The Model must not know that the View or Controller exist.
+View: Renders the UI (the canvas, toolbar, property sheet). It observes the Model for changes.
+Controller: Handles all user input (mouse clicks, key presses, toolbar buttons) and updates the Model.
+Service Layer: Business logic (like validation, complex calculations) should be in a Service layer, not in the Controller.
+Code Quality: The project must pass Sonar (a static analysis tool) for code quality, complexity, and test coverage.
+
+2. Toolbar & Drawing Tools
+You need a main toolbar that includes:
+Shape Tools:
+Ellipse
+Rectangle
+Line
+Image (This is a confirmed shape type)
+Text
+Property Controls:
+Color Picker (for fill, line, and text)
+Pin (for placement)
+Line Style (solid, dashed, etc.)
+Line Width
+Font Changer (a dedicated button just for changing font settings)
+
+3. Shape Workflow (Creating & Selecting)
+Creation: The user creates a shape by pressing the mouse, dragging to set its bounds, and releasing the mouse.
+Default Mode: After a user finishes drawing a shape (e.g., a rectangle), the active tool must automatically revert to the "Select" tool. This prevents the user from accidentally creating multiple shapes.
+Selection:
+Clicking a single shape selects it.
+Dragging a "selection rectangle" selects all shapes within it.
+Ctrl-Click allows for selecting multiple shapes.
+Hollow Shape Selection: For shapes with no fill color (hollow), the selection must work when the user clicks near the shape's outline, not just in its empty center.
+
+4. Property Sheet
+Dynamic Content: The property sheet (a JPanel) must update immediately when a new shape is selected.
+Relevancy: It must only show properties relevant to the selected shape (e.g., "Font" and "Text Content" should only appear if a Text shape is selected).
+Live Updates: Changes made in the property sheet must immediately update the selected shape on the canvas (using a PropertyEventAdapter).
+
+5. Graphics & Color Features
+Transparency (Alpha): Your color model must support an Alpha channel (transparency from 0-255) in addition to RGB.
+Gradients: The application must support gradient fills. Your shape model must store a start color, end color, and their respective alpha values.
+Color Model: The Alpha property must be saved as part of the shape's data in the Model.
+
+6. Undo / Redo (Command Pattern)
+This is a critical requirement. You must implement the Command Pattern for all actions.
+Undoable Actions:
+Create Shape
+Delete Shape
+Update Shape (changing properties like color, size, or gradient)
+Move Shape
+Change Mode (e.g., changing the current tool)
+Implementation: You will need two stacks (e.g., Deque<Command>) for undoStack and redoStack. Each command object must have execute() and unexecute() methods.
+
+7. Saving & Loading (XML)
+This section is now updated with the specific implementation details from the new transcript.
+Format: You must save and load the drawing state using XML.
+File Dialog: All "Open" and "Save" actions must be triggered from a menu and must use a file-dialog box for the user to select a file.
+Exception Handling: All file I/O operations (reading or writing XML files) must be wrapped in try-catch blocks.
+Save Logic (XML Creation):
+Use a DocumentBuilder to create a new in-memory Document.
+Create the root element: <drawing>.
+Add attributes to the <drawing> element, such as the background color and fileName.
+Iterate through all shapes in your Model.
+For each shape, create a <shape> element.
+Add attributes to the <shape> element for all its properties: type (e.g., "rectangle"), coordinates (start.x, start.y), dimensions (width, height), color, etc.
+Image Shapes: For an image, you must add an exclusive fileName attribute (e.g., fileName="path/to/my/image.png") to its <shape> element.
+Save Logic (Writing File):
+Instantiate a TransformerFactory and use it to get a Transformer.
+Create a DOMSource from your in-memory Document.
+Create a StreamResult using the target file name.
+Call transformer.transform(source, result) to write the XML to disk.
+Load Logic (XML Parsing):
+Use DocumentBuilderFactory and DocumentBuilder.
+Call builder.parse(file) to load the XML file into a Document object (DOM).
+Get a NodeList of all shapes by calling getElementsByTagName("shape").
+Loop through this NodeList.
+For each shape node, use getAttributes() to access its properties (using a Map is recommended for easy lookup).
+Read the attributes (type, start.x, color, etc.) and use them to construct a new shape object (e.g., new Rectangle(...)) and add it to your Model.
+Color Parsing (On Load): The color from the XML will be a string (e.g., "255,0,0"). You must split this string by the comma and parse each component into an integer to reconstruct the java.awt.Color object. Your parser should also handle the alpha value if it's included (e.g., "255,0,0,255").
+
+8. Other Requirements
+Input Validation: For numeric fields in the property sheet (like Line Width), you must validate the input. If a user types a non-integer (e.g., "S"), the text field's background should change color (e.g., to red) and the invalid value must be rejected.
+Deletion Strategy: You need to support both:
+Physical Delete: Removing the shape from the list.
+Logical Delete (Marking): Flagging a shape as isDeleted = true but keeping it in the list (this is useful for the Undo command).
+Save on Exit: The application must prompt the user to save any unsaved changes before it is allowed to close.
+Suggested Enhancement (Status Bar): It is recommended you add a Status Bar at the bottom of the window that shows the live X and Y coordinates of the mouse cursor.
+

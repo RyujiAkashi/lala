@@ -146,6 +146,9 @@ public class ActionController implements ActionListener {
             }
             XmlDocumentService docService = new XmlDocumentService(drawing);
             docService.save();
+        } else if (ActionCommand.DELETE.equals(cmd)) {
+            appService.delete();
+            component.repaint();
 
             // TODO Insert the handler for the File menuitems.
 

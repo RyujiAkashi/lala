@@ -19,8 +19,6 @@ public class DrawingMenuBar extends JMenuBar {
         super();
         this.actionListener =actionListener;
 
-// Insert the File menu and menuitems
-
         JMenu menu = new JMenu("File");
         menu.setMnemonic(KeyEvent.VK_F);
 
@@ -36,35 +34,51 @@ public class DrawingMenuBar extends JMenuBar {
         menuItem.setActionCommand(ActionCommand.OPEN);
         menu.add(menuItem);
 
-
-        menuItem = new JMenuItem("SaveAs");
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
-        menuItem.addActionListener(actionListener);
-        menuItem.setActionCommand(ActionCommand.SAVEAS);
-        menu.add(menuItem);
-
         menuItem = new JMenuItem("Save");
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
         menuItem.addActionListener(actionListener);
         menuItem.setActionCommand(ActionCommand.SAVE);
         menu.add(menuItem);
 
-        add(menu);
+        menuItem = new JMenuItem("SaveAs");
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
+        menuItem.addActionListener(actionListener);
+        menuItem.setActionCommand(ActionCommand.SAVEAS);
+        menu.add(menuItem);
 
+        add(menu);
 
         menu = new JMenu("Edit");
         menu.setMnemonic(KeyEvent.VK_E);
 
-        menuItem = new JMenuItem("Umdo");
+        menuItem = new JMenuItem("Undo");
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK));
         menuItem.addActionListener(actionListener);
         menuItem.setActionCommand(ActionCommand.UNDO);
         menu.add(menuItem);
 
         menuItem = new JMenuItem("Redo");
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));;
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
         menuItem.addActionListener(actionListener);
         menuItem.setActionCommand(ActionCommand.REDO);
+        menu.add(menuItem);
+
+        menu.addSeparator();
+
+        menuItem = new JMenuItem("Delete");
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
+        menuItem.addActionListener(actionListener);
+        menuItem.setActionCommand(ActionCommand.DELETE);
+        menu.add(menuItem);
+
+        add(menu);
+
+        menu = new JMenu("Tools");
+        menu.setMnemonic(KeyEvent.VK_T);
+
+        menuItem = new JMenuItem("Select");
+        menuItem.setActionCommand(ActionCommand.SELECT);
+        menuItem.addActionListener(actionListener);
         menu.add(menuItem);
 
         add(menu);
@@ -83,29 +97,27 @@ public class DrawingMenuBar extends JMenuBar {
         menu.add(menuItem);
 
         menuItem = new JMenuItem("Ellipse");
-        menu.add(menuItem);
         menuItem.setActionCommand(ActionCommand.ELLIPSE);
         menuItem.addActionListener(actionListener);
-
-        menuItem = new JMenuItem("Picture");
         menu.add(menuItem);
-        menuItem.setActionCommand(ActionCommand.IMAGE);
-        menuItem.addActionListener(actionListener);
+
+        add(menu);
+
+        menu = new JMenu("Insert");
+        menu.setMnemonic(KeyEvent.VK_I);
 
         menuItem = new JMenuItem("Text");
         menuItem.setActionCommand(ActionCommand.TEXT);
         menuItem.addActionListener(actionListener);
         menu.add(menuItem);
 
-        menuItem = new JMenuItem("Select");
-        menuItem.setActionCommand(ActionCommand.SELECT);
+        menuItem = new JMenuItem("Image");
+        menuItem.setActionCommand(ActionCommand.IMAGE);
         menuItem.addActionListener(actionListener);
         menu.add(menuItem);
 
-
         add(menu);
 
-        // Properties
         menu = new JMenu("Properties");
         menu.setMnemonic(KeyEvent.VK_P);
 
@@ -116,6 +128,11 @@ public class DrawingMenuBar extends JMenuBar {
 
         menuItem = new JMenuItem("Fill");
         menuItem.setActionCommand(ActionCommand.FILL);
+        menuItem.addActionListener(actionListener);
+        menu.add(menuItem);
+
+        menuItem = new JMenuItem("Font");
+        menuItem.setActionCommand(ActionCommand.FONT);
         menuItem.addActionListener(actionListener);
         menu.add(menuItem);
 

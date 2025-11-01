@@ -104,9 +104,42 @@ This compiles and runs the draw module's Main class which launches the SplashFra
     - SetPropertyCommand (infrastructure ready)
   - Wrapped delete, move, and scale operations in DrawingCommandAppService
 
+- November 1, 2025: 1st Revision Improvements
+  - **Menu Bar Reorganization**:
+    - Created "Tools" menu (moved Select tool here)
+    - Created "Insert" menu (moved Text and Image here)
+    - Kept "Draw" menu for shape tools (Line, Rectangle, Ellipse)
+    - Added Font to Properties menu
+    - Fixed typo: "Umdo" → "Undo"
+    - Added Delete menu item to Edit menu
+  - **Toolbar Enhancements**:
+    - Added Color (stroke) and Fill color picker buttons
+    - Added Delete, Undo, and Redo buttons
+    - Reorganized layout with logical separators
+    - Cleaner visual appearance
+  - **Property Sheet Refactoring**:
+    - Removed test/unnecessary properties
+    - Shows only relevant, editable properties
+    - Dynamic content based on selected shape type
+    - Shape-specific properties (e.g., Text Content for text, Image Path for images)
+    - Conditional display (e.g., Gradient colors only shown when gradient is enabled)
+  - **Shape Rendering Improvements**:
+    - Added shapeMode field to Shape base class
+    - All shape constructors (Line, Rectangle, Ellipse, Text, Image) now set correct shapeMode
+    - Line shapes now display only 2 handles (at endpoints)
+    - Other shapes display 8 handles (corners and midpoints)
+    - Selection handles changed from outlined to filled blue rectangles for better visibility
+  - **Delete Functionality**:
+    - Added DELETE action command
+    - Delete handler calls existing delete() method
+    - Integrated with undo/redo system via DeleteShapeCommand
+
 ## Known Limitations
 1. Property changes from property sheet not yet wrapped in undo commands (infrastructure in place, needs integration)
-2. Some LSP warnings present (mostly unused imports, non-critical)
+2. Text editing, moving, and reshaping not yet implemented
+3. Rendering during move/reshape may need optimization
+4. Undo/redo/save buttons not yet disabled when nothing has changed
+5. Some LSP warnings present (mostly unused imports, non-critical)
 
 ## Requirements Compliance
 Based on professor's requirements:

@@ -9,11 +9,6 @@ import com.gabriel.property.cell.SelectionCellComponent;
 import com.gabriel.property.property.*;
 import com.gabriel.property.property.selection.Item;
 import com.gabriel.property.property.selection.SelectionProperty;
-import com.gabriel.property.validator.CompoundValidator;
-import com.gabriel.property.validator.StringValidator;
-import com.gabriel.property.validator.doubleNumber.DoubleRangeValidator;
-import com.gabriel.property.validator.doubleNumber.DoubleValidator;
-import com.gabriel.property.validator.doubleNumber.DoubleZeroPolicyValidator;
 import com.gabriel.drawfx.model.Shape;
 import com.gabriel.drawfx.service.AppService;
 
@@ -28,6 +23,7 @@ public class PropertySheet extends PropertyPanel {
     Item EllipseItem;
     Item LineItem;
     Item TextItem;
+    Item ImageItem;
     Item SelectItem;
 
 
@@ -39,6 +35,10 @@ public class PropertySheet extends PropertyPanel {
             selectionComponent.setCellEditorValue(EllipseItem);
         } else if (shapeMode == ShapeMode.Line) {
             selectionComponent.setCellEditorValue(LineItem);
+        } else if (shapeMode == ShapeMode.Text) {
+            selectionComponent.setCellEditorValue(TextItem);
+        } else if (shapeMode == ShapeMode.Image) {
+            selectionComponent.setCellEditorValue(ImageItem);
         } else if (shapeMode == ShapeMode.Select) {
             selectionComponent.setCellEditorValue(SelectItem);
         }
@@ -47,12 +47,13 @@ public class PropertySheet extends PropertyPanel {
     public PropertySheet(PropertyOptions options){
         super(options);
         shapeProp = new SelectionProperty<>(
-                "Current Shape",
+                "Current Tool",
                 new ArrayList<>(Arrays.asList(
                         new Item<>(ShapeMode.Rectangle, "Rectangle"),
                         new Item<>(ShapeMode.Ellipse, "Ellipse"),
                         new Item<>(ShapeMode.Line, "Line"),
                         new Item<>(ShapeMode.Text, "Text"),
+                        new Item<>(ShapeMode.Image, "Image"),
                         new Item<>(ShapeMode.Select, "Select")
                 ))
         );
@@ -66,29 +67,50 @@ public class PropertySheet extends PropertyPanel {
         propertyTable.clear();
         Shape shape  = appService.getSelectedShape();
         String objectType;
+        String shapeType = "None";
+        
         if ( shape == null) {
             objectType = "Drawing";
-        }
-        else {
+        } else {
             objectType = "Shape";
+            ShapeMode mode = shape.getShapeMode();
+            if (mode == ShapeMode.Rectangle) {
+                shapeType = "Rectangle";
+            } else if (mode == ShapeMode.Ellipse) {
+                shapeType = "Ellipse";
+            } else if (mode == ShapeMode.Line) {
+                shapeType = "Line";
+            } else if (mode == ShapeMode.Text) {
+                shapeType = "Text";
+            } else if (mode == ShapeMode.Image) {
+                shapeType = "Image";
+            }
         }
 
-        StringProperty targetProp = new StringProperty("Object Type", objectType);
-        propertyTable.addProperty(targetProp);
+        StringProperty typeProp = new StringProperty("Object Type", objectType);
+        propertyTable.addProperty(typeProp);
+
+        if (shape != null) {
+            StringProperty shapeProp = new StringProperty("Shape Type", shapeType);
+            propertyTable.addProperty(shapeProp);
+        }
 
         RectangleItem = new Item<ShapeMode>(ShapeMode.Rectangle, "Rectangle");
         EllipseItem = new Item<ShapeMode>(ShapeMode.Ellipse, "Ellipse");
         LineItem =    new Item<ShapeMode>(ShapeMode.Line, "Line");
-        SelectItem =    new Item<ShapeMode>(ShapeMode.Select, "Select");
         TextItem =    new Item<ShapeMode>(ShapeMode.Text, "Text");
+        ImageItem =   new Item<ShapeMode>(ShapeMode.Image, "Image");
+        SelectItem =  new Item<ShapeMode>(ShapeMode.Select, "Select");
+        
         shapeProp = new SelectionProperty<>(
-                "Current Shape",
+                "Current Tool",
                 new ArrayList<>(Arrays.asList(
                         RectangleItem,
                         EllipseItem,
                         LineItem,
-                        SelectItem,
-                        TextItem
+                        TextItem,
+                        ImageItem,
+                        SelectItem
                 ))
         );
 
@@ -98,109 +120,78 @@ public class PropertySheet extends PropertyPanel {
         ShapeMode shapeMode = appService.getShapeMode();
         if(shapeMode == ShapeMode.Rectangle) {
             selectionComponent.setCellEditorValue(RectangleItem);
-        }
-        else if(shapeMode == ShapeMode.Ellipse) {
+        } else if(shapeMode == ShapeMode.Ellipse) {
             selectionComponent.setCellEditorValue(EllipseItem);
-        }
-        else if(shapeMode == ShapeMode.Line) {
+        } else if(shapeMode == ShapeMode.Line) {
             selectionComponent.setCellEditorValue(LineItem);
-        }
-        else if(shapeMode == ShapeMode.Select) {
+        } else if(shapeMode == ShapeMode.Text) {
+            selectionComponent.setCellEditorValue(TextItem);
+        } else if(shapeMode == ShapeMode.Image) {
+            selectionComponent.setCellEditorValue(ImageItem);
+        } else if(shapeMode == ShapeMode.Select) {
             selectionComponent.setCellEditorValue(SelectItem);
         }
-        shapeProp.setValue(shape);
 
+        ColorProperty foreColorProp = new ColorProperty("Stroke Color", appService.getColor());
+        propertyTable.addProperty(foreColorProp);
 
-        ColorProperty currentColorProp = new ColorProperty("Fore color", appService.getColor());
-        propertyTable.addProperty(currentColorProp);
+        ColorProperty fillColorProp = new ColorProperty("Fill Color",  appService.getFill());
+        propertyTable.addProperty(fillColorProp);
 
-        ColorProperty currentFillProp = new ColorProperty("Fill color",  appService.getFill());
-        propertyTable.addProperty(currentFillProp);
-
-        ColorProperty currentStartColorProp = new ColorProperty("Start color",  appService.getStartColor());
-        propertyTable.addProperty(currentStartColorProp);
-
-        ColorProperty currentEndColorProp = new ColorProperty("End color",  appService.getEndColor());
-        propertyTable.addProperty(currentEndColorProp);
-
-        IntegerProperty startx = new IntegerProperty("Start x", appService.getXLocation());
-        propertyTable.addProperty(startx );
-
-        IntegerProperty starty = new IntegerProperty("Start y", appService.getXLocation());
-        propertyTable.addProperty(starty );
-
-        IntegerProperty endx = new IntegerProperty("End x", appService.getXLocation());
-        propertyTable.addProperty(endx );
-
-        IntegerProperty endy = new IntegerProperty("End y", appService.getXLocation());
-        propertyTable.addProperty(endy );
-
-        BooleanProperty isGradientProp = new BooleanProperty("IsGradient",  appService.isGradient() );
+        BooleanProperty isGradientProp = new BooleanProperty("Use Gradient",  appService.isGradient());
         propertyTable.addProperty(isGradientProp);
 
-        BooleanProperty isVisibleProp = new BooleanProperty("IsVisible",  appService.isGradient() );
-        propertyTable.addProperty(isVisibleProp);
+        if (appService.isGradient()) {
+            ColorProperty startColorProp = new ColorProperty("Gradient Start",  appService.getStartColor());
+            propertyTable.addProperty(startColorProp);
+
+            ColorProperty endColorProp = new ColorProperty("Gradient End",  appService.getEndColor());
+            propertyTable.addProperty(endColorProp);
+        }
 
         IntegerProperty lineThicknessProp = new IntegerProperty("Line Thickness", appService.getThickness());
         propertyTable.addProperty(lineThicknessProp);
 
-        IntegerProperty xlocProp = new IntegerProperty("X Location", appService.getXLocation());
-        propertyTable.addProperty(xlocProp);
+        if (shape != null) {
+            IntegerProperty startXProp = new IntegerProperty("Start X", (int)shape.getStart().getX());
+            propertyTable.addProperty(startXProp);
 
-        IntegerProperty ylocProp = new IntegerProperty("Y Location", appService.getYLocation());
-        propertyTable.addProperty(ylocProp);
+            IntegerProperty startYProp = new IntegerProperty("Start Y", (int)shape.getStart().getY());
+            propertyTable.addProperty(startYProp);
 
-        IntegerProperty width = new IntegerProperty("Width", appService.getXLocation());
-        propertyTable.addProperty(width );
+            IntegerProperty endXProp = new IntegerProperty("End X", (int)shape.getEnd().getX());
+            propertyTable.addProperty(endXProp);
 
-        IntegerProperty height = new IntegerProperty("Height", appService.getXLocation());
-        propertyTable.addProperty(height);
+            IntegerProperty endYProp = new IntegerProperty("End Y", (int)shape.getEnd().getY());
+            propertyTable.addProperty(endYProp);
 
-        BooleanProperty prop3 = new BooleanProperty("Boolean", true);
-        propertyTable.addProperty(prop3);
+            int width = (int)(shape.getEnd().getX() - shape.getStart().getX());
+            int height = (int)(shape.getEnd().getY() - shape.getStart().getY());
 
-        if(shape!=null) {
-            BooleanProperty selectedProp = new BooleanProperty("is Selected", shape.isSelected());
-            propertyTable.addProperty(selectedProp);
+            IntegerProperty widthProp = new IntegerProperty("Width", Math.abs(width));
+            propertyTable.addProperty(widthProp);
+
+            IntegerProperty heightProp = new IntegerProperty("Height", Math.abs(height));
+            propertyTable.addProperty(heightProp);
         }
 
-        FloatProperty prop4 = new FloatProperty("Float", 1.2f);
-        propertyTable.addProperty(prop4);
+        if (shape != null && shape.getShapeMode() == ShapeMode.Text) {
+            StringProperty textProp = new StringProperty("Text Content", shape.getText() != null ? shape.getText() : "");
+            propertyTable.addProperty(textProp);
 
-        StringProperty stringProp = new StringProperty("Text", appService.getText());
-        propertyTable.addProperty(stringProp);
+            Font font = shape.getFont() != null ? shape.getFont() : appService.getFont();
+            
+            StringProperty fontFamilyProp = new StringProperty("Font Family", font.getFamily());
+            propertyTable.addProperty(fontFamilyProp);
 
-        stringProp = new StringProperty("Image", appService.getImageFilename());
-        propertyTable.addProperty(stringProp);
+            IntegerProperty fontSizeProp = new IntegerProperty("Font Size", font.getSize());
+            propertyTable.addProperty(fontSizeProp);
+        }
 
-        Font font = appService.getFont();
-
-        stringProp = new StringProperty("Font family", font.getFamily());
-        propertyTable.addProperty(stringProp);
-
-        IntegerProperty intProp = new IntegerProperty("Font style", font.getStyle());
-        propertyTable.addProperty(intProp);
-
-        intProp = new IntegerProperty("Font size", font.getSize());
-        propertyTable.addProperty(intProp);
-
-        StringProperty prop6 = new StringProperty("String 2", "test", new StringValidator(
-                new String[]{"test", "test 2", "foo"}
-        ));
-        propertyTable.addProperty(prop6);
-
-        DoubleProperty prop8 = new DoubleProperty("Double", 2.34,
-                new CompoundValidator(
-                        new DoubleValidator(),
-                        new DoubleRangeValidator(-1.2, 45.33, true, false),
-                        new DoubleZeroPolicyValidator(false)
-                )
-        );
-        ActionProperty prop9;
-        prop9 = new ActionProperty("Press me", "Press me",
-                () -> {
-                    System.out.println("Pressed");
-                });
-        propertyTable.addProperty(prop9);
+        if (shape != null && shape.getShapeMode() == ShapeMode.Image) {
+            String imagePath = shape.getImageFilename() != null ? shape.getImageFilename() : "";
+            StringProperty imageProp = new StringProperty("Image Path", imagePath);
+            propertyTable.addProperty(imageProp);
+        }
     }
 }

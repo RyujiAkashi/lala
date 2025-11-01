@@ -1,5 +1,6 @@
 package com.gabriel.drawfx.renderer;
 
+import com.gabriel.drawfx.ShapeMode;
 import com.gabriel.drawfx.model.Shape;
 
 import java.awt.*;
@@ -18,19 +19,23 @@ public class ShapeRenderer implements Renderer {
                  g.setXORMode(shape.getColor());
             }
             else {
-                g.setColor(shape.getColor());
+                g.setColor(Color.BLUE);
             }
 
-            g.drawRect(loc.x-r,loc.y-r, 2*r,2*r);
-            g.drawRect(loc.x-r,loc.y+height-r, 2*r, 2*r);
-            g.drawRect(loc.x + width -r,loc.y -r, 2*r, 2*r);
-            g.drawRect(loc.x + width -r,loc.y+height-r, 2*r, 2*r);
+            if (shape.getShapeMode() == ShapeMode.Line) {
+                g.fillRect(loc.x-r,loc.y-r, 2*r,2*r);
+                g.fillRect(loc.x + width -r,loc.y+height-r, 2*r, 2*r);
+            } else {
+                g.fillRect(loc.x-r,loc.y-r, 2*r,2*r);
+                g.fillRect(loc.x-r,loc.y+height-r, 2*r, 2*r);
+                g.fillRect(loc.x + width -r,loc.y -r, 2*r, 2*r);
+                g.fillRect(loc.x + width -r,loc.y+height-r, 2*r, 2*r);
 
-            g.drawRect(loc.x + width/2 -r,loc.y-r, 2*r, 2*r);
-            g.drawRect(loc.x -r,loc.y+height/2-r, 2*r, 2*r);
-            g.drawRect(loc.x + width -r,loc.y+height/2-r, 2*r, 2*r);
-            g.drawRect(loc.x + width/2 -r,loc.y+height-r, 2*r, 2*r);
-            g.drawRect(loc.x + width -r,loc.y+height/2-r, 2*r, 2*r);
+                g.fillRect(loc.x + width/2 -r,loc.y-r, 2*r, 2*r);
+                g.fillRect(loc.x -r,loc.y+height/2-r, 2*r, 2*r);
+                g.fillRect(loc.x + width -r,loc.y+height/2-r, 2*r, 2*r);
+                g.fillRect(loc.x + width/2 -r,loc.y+height-r, 2*r, 2*r);
+            }
         }
     }
 }

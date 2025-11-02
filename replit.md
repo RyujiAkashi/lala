@@ -40,6 +40,19 @@ Command: `mvn -pl draw exec:java`
     - Implemented save-on-exit prompt to prevent data loss
     - Added proper filename handling - prompts for filename when drawing has never been saved
     - Changed window close behavior to DO_NOTHING_ON_CLOSE to enable save prompt
+  - **Command Pattern Enhancements:**
+    - Implemented SetPropertyCommand for all property modifications (color, fill, width, height, thickness, text, font, gradient, visibility, location)
+    - Fixed undo/redo to work action-based (A to B) instead of pixel-by-pixel
+    - Enhanced SetPropertyCommand to handle multiple property types via reflection (boolean, int, Color, Point, Font, String)
+    - Fixed location commands to properly capture old values before mutation
+    - All property changes now support undo/redo functionality
+  - **Text Gradient Support:**
+    - Added gradient paint rendering to TextRenderer using GradientPaint with start/end colors
+    - Text shapes now properly display gradient fills
+  - **Multiple Selection Support:**
+    - Extended property modification commands to work on all selected shapes simultaneously
+    - Users can now modify properties (color, size, position, etc.) for multiple shapes at once
+    - True grouping functionality for property editing
   - Application running successfully with all interactive features working
 
 ## Key Features (Based on Requirements)

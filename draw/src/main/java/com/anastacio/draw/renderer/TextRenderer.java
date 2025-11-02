@@ -33,7 +33,18 @@ public class TextRenderer extends ShapeRenderer {
             }
             g2.drawRect(x, y, width, height);
         } else {
-            if(shape.getColor() != null) {
+            if (shape.isGradient() && shape.getStartColor() != null && shape.getEndColor() != null) {
+                int startX = shape.getStartx();
+                int startY = shape.getStarty();
+                int endX = shape.getEndx();
+                int endY = shape.getEndy();
+                
+                GradientPaint gradient = new GradientPaint(
+                    startX, startY, shape.getStartColor(),
+                    endX, endY, shape.getEndColor()
+                );
+                g2.setPaint(gradient);
+            } else if (shape.getColor() != null) {
                 g2.setColor(shape.getColor());
             }
             

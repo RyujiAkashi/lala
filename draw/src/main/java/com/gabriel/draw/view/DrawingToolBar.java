@@ -31,7 +31,7 @@ public class DrawingToolBar extends JToolBar {
 
         addSeparator();
 
-        button = makeNavigationButton("rect", ActionCommand.RECT, "Draw a rectangle",ActionCommand.RECT);
+        button = makeNavigationButton("rectangle", ActionCommand.RECT, "Draw a rectangle",ActionCommand.RECT);
         add(button);
 
         button = makeNavigationButton("ellipse", ActionCommand.ELLIPSE,"Draw an ellipse",ActionCommand.ELLIPSE);

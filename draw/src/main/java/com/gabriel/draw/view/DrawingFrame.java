@@ -16,7 +16,8 @@ import com.gabriel.property.property.Property;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class DrawingFrame extends JFrame {
 
@@ -34,6 +35,7 @@ public class DrawingFrame extends JFrame {
     JScrollPane jScrollPane;
     DrawingStatusPanel drawingStatusPanel;
     DrawingWindowController drawingWindowController;
+    
     public DrawingFrame() {
 
         drawing = new Drawing();
@@ -80,7 +82,15 @@ public class DrawingFrame extends JFrame {
         drawingAppService.setDrawingView(drawingView);
 
         setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                handleExit();
+            }
+        });
+        
         setSize(500,500);
 
         drawingWindowController = new DrawingWindowController(appService);
@@ -89,6 +99,42 @@ public class DrawingFrame extends JFrame {
         this.addWindowStateListener(drawingWindowController);
         buildGUI(pane);
         drawingController.setPropertySheet(propertySheet);
+    }
+    
+    private void handleExit() {
+        if(!drawing.getShapes().isEmpty()) {
+            int result = JOptionPane.showConfirmDialog(
+                this,
+                "Do you want to save your changes before exiting?",
+                "Save Changes?",
+                JOptionPane.YES_NO_CANCEL_OPTION
+            );
+            
+            if (result == JOptionPane.YES_OPTION) {
+                String filename = drawing.getFilename();
+                if (filename == null || filename.isEmpty()) {
+                    JFileChooser fileChooser = new JFileChooser();
+                    fileChooser.setDialogTitle("Save Drawing");
+                    int saveResult = fileChooser.showSaveDialog(this);
+                    if (saveResult == JFileChooser.APPROVE_OPTION) {
+                        filename = fileChooser.getSelectedFile().getAbsolutePath();
+                        if(!filename.endsWith(".xml")) {
+                            filename += ".xml";
+                        }
+                        drawing.setFilename(filename);
+                        appService.save();
+                        System.exit(0);
+                    }
+                } else {
+                    appService.save();
+                    System.exit(0);
+                }
+            } else if (result == JOptionPane.NO_OPTION) {
+                System.exit(0);
+            }
+        } else {
+            System.exit(0);
+        }
     }
 
     public void buildGUI(Container pane){
@@ -117,65 +163,77 @@ public class DrawingFrame extends JFrame {
         @Override
         public void onPropertyUpdated(Property property) {
             Shape shape  = appService.getSelectedShape();
-            if(property.getName().equals("Current Shape")){
-                if(shape ==null) {
-                    appService.setShapeMode((ShapeMode) property.getValue());
-                }
+            
+            if(property.getName().equals("Current Tool")){
+                appService.setShapeMode((ShapeMode) property.getValue());
             }
-            if(property.getName().equals("Fore color")){
+            else if(property.getName().equals("Fore color")){
                 if(shape ==null) {
                     appService.setColor((Color) property.getValue());
                 } else {
                     shape.setColor((Color) property.getValue());
                 }
             }
-            if(property.getName().equals("Fill color")){
+            else if(property.getName().equals("Fill color")){
                 if(shape ==null) {
                     appService.setFill((Color)property.getValue());
                 } else {
                     shape.setFill((Color) property.getValue());
                 }
             }
-            if(property.getName().equals("Line Thickness")){
-                if(shape ==null) {
-                    appService.setThickness((int)property.getValue());
-                } else {
-                    shape.setThickness((int) property.getValue());
-                }
+            else if(property.getName().equals("IsGradient")){
+                appService.setIsGradient((Boolean)property.getValue());
+                propertySheet.populateTable(appService);
             }
-            if(property.getName().equals("X Location")){
-                if(shape ==null) {
-                    ;
-                } else {
-                    Point p = shape.getLocation();
-                    p.x = (int) property.getValue();
-                    shape.setLocation(p);
-                }
+            else if(property.getName().equals("Start color")){
+                appService.setStartColor((Color)property.getValue());
             }
-            if(property.getName().equals("Y Location")){
-                if(shape ==null) {
-                    ;
-                } else {
-                    Point p = shape.getLocation();
-                    p.y = (int) property.getValue();
-                    shape.setLocation(p);
-                }
+            else if(property.getName().equals("End color")){
+                appService.setEndColor((Color)property.getValue());
             }
-            if(property.getName().equals("Width")){
-                if(shape ==null) {
-                    ;
-                } else {
-                    int width = shape.getWidth();
-                    shape.setWidth(width);
-                }
+            else if(property.getName().equals("Start x")){
+                appService.setStartX((Integer)property.getValue());
             }
-            if(property.getName().equals("Height")){
-                if(shape ==null) {
-                    ;
-                } else {
-                    int height = (int) property.getValue();
-                    shape.setHeight(height);
-                }
+            else if(property.getName().equals("Start y")){
+                appService.setStarty((Integer)property.getValue());
+            }
+            else if(property.getName().equals("End x")){
+                appService.setEndx((Integer)property.getValue());
+            }
+            else if(property.getName().equals("End y")){
+                appService.setEndy((Integer)property.getValue());
+            }
+            else if(property.getName().equals("IsVisible")){
+                appService.setIsVisible((Boolean)property.getValue());
+            }
+            else if(property.getName().equals("Line Thickness")){
+                appService.setThickness((Integer)property.getValue());
+            }
+            else if(property.getName().equals("X Location")){
+                appService.setXLocation((Integer)property.getValue());
+            }
+            else if(property.getName().equals("Y Location")){
+                appService.setYLocation((Integer)property.getValue());
+            }
+            else if(property.getName().equals("Width")){
+                appService.setWidth((Integer)property.getValue());
+            }
+            else if(property.getName().equals("Height")){
+                appService.setHeight((Integer)property.getValue());
+            }
+            else if(property.getName().equals("Text") || property.getName().equals("Default Text")){
+                appService.setText((String)property.getValue());
+            }
+            else if(property.getName().equals("Font family")){
+                Font currentFont = appService.getFont();
+                Font newFont = new Font((String)property.getValue(), currentFont.getStyle(), currentFont.getSize());
+                appService.setFont(newFont);
+            }
+            else if(property.getName().equals("Font size")){
+                appService.setFontSize((Integer)property.getValue());
+            }
+            else if(property.getName().equals("Image Path")){
+                appService.setImageFilename((String)property.getValue());
             }
 
             drawingView.repaint();

@@ -147,49 +147,67 @@ public class PropertySheet extends PropertyPanel {
 
             ColorProperty endColorProp = new ColorProperty("End color",  appService.getEndColor());
             propertyTable.addProperty(endColorProp);
+            
+            IntegerProperty startXProp = new IntegerProperty("Start x", appService.getStartX());
+            propertyTable.addProperty(startXProp);
+
+            IntegerProperty startYProp = new IntegerProperty("Start y", appService.getStarty());
+            propertyTable.addProperty(startYProp);
+
+            IntegerProperty endXProp = new IntegerProperty("End x", appService.getEndx());
+            propertyTable.addProperty(endXProp);
+
+            IntegerProperty endYProp = new IntegerProperty("End y", appService.getEndy());
+            propertyTable.addProperty(endYProp);
         }
+        
+        BooleanProperty isVisibleProp = new BooleanProperty("IsVisible", appService.isVisible());
+        propertyTable.addProperty(isVisibleProp);
 
         IntegerProperty lineThicknessProp = new IntegerProperty("Line Thickness", appService.getThickness());
         propertyTable.addProperty(lineThicknessProp);
 
         if (shape != null) {
-            IntegerProperty startXProp = new IntegerProperty("Start x", (int)shape.getStart().getX());
-            propertyTable.addProperty(startXProp);
+            IntegerProperty xLocationProp = new IntegerProperty("X Location", appService.getXLocation());
+            propertyTable.addProperty(xLocationProp);
 
-            IntegerProperty startYProp = new IntegerProperty("Start y", (int)shape.getStart().getY());
-            propertyTable.addProperty(startYProp);
+            IntegerProperty yLocationProp = new IntegerProperty("Y Location", appService.getYLocation());
+            propertyTable.addProperty(yLocationProp);
 
-            IntegerProperty endXProp = new IntegerProperty("End x", (int)shape.getEnd().getX());
-            propertyTable.addProperty(endXProp);
-
-            IntegerProperty endYProp = new IntegerProperty("End y", (int)shape.getEnd().getY());
-            propertyTable.addProperty(endYProp);
-
-            int width = (int)(shape.getEnd().getX() - shape.getStart().getX());
-            int height = (int)(shape.getEnd().getY() - shape.getStart().getY());
-
-            IntegerProperty widthProp = new IntegerProperty("Width", Math.abs(width));
+            IntegerProperty widthProp = new IntegerProperty("Width", appService.getWidth());
             propertyTable.addProperty(widthProp);
 
-            IntegerProperty heightProp = new IntegerProperty("Height", Math.abs(height));
+            IntegerProperty heightProp = new IntegerProperty("Height", appService.getHeight());
             propertyTable.addProperty(heightProp);
         }
 
         if (shape != null && shape.getShapeMode() == ShapeMode.Text) {
-            StringProperty textProp = new StringProperty("Text", shape.getText() != null ? shape.getText() : "");
+            StringProperty textProp = new StringProperty("Text", appService.getText() != null ? appService.getText() : "");
             propertyTable.addProperty(textProp);
 
-            Font font = shape.getFont() != null ? shape.getFont() : appService.getFont();
-            
-            StringProperty fontFamilyProp = new StringProperty("Font family", font.getFamily());
-            propertyTable.addProperty(fontFamilyProp);
+            Font font = appService.getFont();
+            if(font != null) {
+                StringProperty fontFamilyProp = new StringProperty("Font family", font.getFamily());
+                propertyTable.addProperty(fontFamilyProp);
 
-            IntegerProperty fontSizeProp = new IntegerProperty("Font size", font.getSize());
-            propertyTable.addProperty(fontSizeProp);
+                IntegerProperty fontSizeProp = new IntegerProperty("Font size", font.getSize());
+                propertyTable.addProperty(fontSizeProp);
+            }
+        }
+        
+        if (shape == null) {
+            String text = appService.getText();
+            if(text != null && !text.isEmpty()) {
+                StringProperty textProp = new StringProperty("Default Text", text);
+                propertyTable.addProperty(textProp);
+            }
         }
 
         if (shape != null && shape.getShapeMode() == ShapeMode.Image) {
-            String imagePath = shape.getImageFilename() != null ? shape.getImageFilename() : "";
+            String imagePath = appService.getImageFilename();
+            if(imagePath == null) {
+                imagePath = "";
+            }
             StringProperty imageProp = new StringProperty("Image Path", imagePath);
             propertyTable.addProperty(imageProp);
         }

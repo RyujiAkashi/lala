@@ -5,30 +5,35 @@ import javax.swing.border.BevelBorder;
 import java.awt.*;
 
 public class DrawingStatusPanel extends JPanel {
-    JLabel coordinateLabel = new JLabel("Command");
-    JTextField xText = new JTextField();
-    JTextField yText = new JTextField();
+    private final JLabel statusLabel = new JLabel("Status:");
+    private final JTextField xText = new JTextField(6);
+    private final JTextField yText = new JTextField(6);
 
-    public DrawingStatusPanel(){
-        super.setBorder(new BevelBorder(BevelBorder.LOWERED));
-        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        JLabel statusLabel = new JLabel("status");
-        statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
+    public DrawingStatusPanel() {
+        setBorder(new BevelBorder(BevelBorder.LOWERED));
+        setLayout(new FlowLayout(FlowLayout.LEFT, 10, 2));
+
+        statusLabel.setFont(new Font("SansSerif", Font.BOLD, 12));
+        xText.setEditable(false);
+        yText.setEditable(false);
+        xText.setHorizontalAlignment(JTextField.CENTER);
+        yText.setHorizontalAlignment(JTextField.CENTER);
+
+        xText.setPreferredSize(new Dimension(60, 24));
+        yText.setPreferredSize(new Dimension(60, 24));
+
         add(statusLabel);
-        add(new JLabel("x: "));
+        add(new JLabel("X:"));
         add(xText);
-        add(new JLabel("y: "));
+        add(new JLabel("Y:"));
         add(yText);
-        xText.setSize(16,36);
-        yText.setSize(16,36);
-        xText.setText("100");
-        yText.setText("250");
 
-        setPreferredSize(new Dimension( 1440,16));
-        this.setBackground(Color.DARK_GRAY);
+        setPreferredSize(new Dimension(1440, 30));
+        setBackground(new Color(230, 230, 230));
     }
-    public void setPoint(Point p){
-        xText.setText("x = " + String.valueOf(p.x));
-        yText.setText("y = " + String.valueOf(p.y));
+
+    public void setPoint(Point p) {
+        xText.setText(String.valueOf(p.x));
+        yText.setText(String.valueOf(p.y));
     }
 }

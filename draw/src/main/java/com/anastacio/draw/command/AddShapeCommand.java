@@ -1,0 +1,29 @@
+package com.anastacio.draw.command;
+
+import com.anastacio.drawfx.command.Command;
+import com.anastacio.drawfx.model.Shape;
+import com.anastacio.drawfx.service.AppService;
+
+public class AddShapeCommand implements Command{
+    Shape shape;
+    AppService appService;
+
+    public AddShapeCommand(AppService appService, Shape shape){
+        this.shape = shape;
+        this.appService = appService;
+    }
+    @Override
+    public void execute() {
+        appService.create(shape);
+    }
+
+    @Override
+    public void undo() {
+        appService.delete(shape);
+    }
+
+    @Override
+    public void redo() {
+        appService.create(shape);
+    }
+}

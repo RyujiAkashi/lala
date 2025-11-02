@@ -24,11 +24,23 @@ The application is configured to run automatically through the "GoDraw Applicati
 Command: `mvn -pl draw exec:java`
 
 ## Recent Changes
-- **2025-11-02**: Project imported to Replit environment
+- **2025-11-02**: Project migrated and enhanced for Replit environment
   - Installed Java (GraalVM)
   - Successfully built all Maven modules
   - Configured VNC workflow for GUI display
-  - Application running successfully
+  - **Critical Bug Fixes:**
+    - Fixed XORMode null pointer error in all shape renderers (Rectangle, Ellipse, Line, Text) by adding null checks before setXORMode calls
+    - Changed default mode from Idle/Ellipse to Select mode for better user experience
+    - Centered all popup dialogs (color picker, font dialog) on parent frame
+  - **Property Sheet Enhancements:**
+    - Added comprehensive fields: visibility, x/y location, width/height, gradient properties (start/end colors, start/end x/y), text properties, font, line thickness
+    - Fixed property update handlers to use new values correctly (was using old values)
+    - All property changes now trigger immediate repaint for visual feedback
+  - **Save Functionality:**
+    - Implemented save-on-exit prompt to prevent data loss
+    - Added proper filename handling - prompts for filename when drawing has never been saved
+    - Changed window close behavior to DO_NOTHING_ON_CLOSE to enable save prompt
+  - Application running successfully with all interactive features working
 
 ## Key Features (Based on Requirements)
 - Multiple drawing tools (Rectangle, Ellipse, Line, Image, Text)

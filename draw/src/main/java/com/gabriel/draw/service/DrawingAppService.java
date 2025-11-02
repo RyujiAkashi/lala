@@ -483,10 +483,14 @@ public class DrawingAppService implements AppService {
 
     public void delete() {
         List<Shape> shapes = drawing.getShapes();
+        List<Shape> shapesToDelete = new ArrayList<>();
         for(Shape shape : shapes) {
             if(shape.isSelected()) {
-                delete(shape);
+                shapesToDelete.add(shape);
             }
+        }
+        for(Shape shape : shapesToDelete) {
+            delete(shape);
         }
     }
 

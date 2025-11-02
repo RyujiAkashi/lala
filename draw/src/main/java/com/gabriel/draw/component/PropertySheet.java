@@ -132,20 +132,20 @@ public class PropertySheet extends PropertyPanel {
             selectionComponent.setCellEditorValue(SelectItem);
         }
 
-        ColorProperty foreColorProp = new ColorProperty("Stroke Color", appService.getColor());
+        ColorProperty foreColorProp = new ColorProperty("Fore color", appService.getColor());
         propertyTable.addProperty(foreColorProp);
 
-        ColorProperty fillColorProp = new ColorProperty("Fill Color",  appService.getFill());
+        ColorProperty fillColorProp = new ColorProperty("Fill color",  appService.getFill());
         propertyTable.addProperty(fillColorProp);
 
-        BooleanProperty isGradientProp = new BooleanProperty("Use Gradient",  appService.isGradient());
+        BooleanProperty isGradientProp = new BooleanProperty("IsGradient",  appService.isGradient());
         propertyTable.addProperty(isGradientProp);
 
         if (appService.isGradient()) {
-            ColorProperty startColorProp = new ColorProperty("Gradient Start",  appService.getStartColor());
+            ColorProperty startColorProp = new ColorProperty("Start color",  appService.getStartColor());
             propertyTable.addProperty(startColorProp);
 
-            ColorProperty endColorProp = new ColorProperty("Gradient End",  appService.getEndColor());
+            ColorProperty endColorProp = new ColorProperty("End color",  appService.getEndColor());
             propertyTable.addProperty(endColorProp);
         }
 
@@ -153,16 +153,16 @@ public class PropertySheet extends PropertyPanel {
         propertyTable.addProperty(lineThicknessProp);
 
         if (shape != null) {
-            IntegerProperty startXProp = new IntegerProperty("Start X", (int)shape.getStart().getX());
+            IntegerProperty startXProp = new IntegerProperty("Start x", (int)shape.getStart().getX());
             propertyTable.addProperty(startXProp);
 
-            IntegerProperty startYProp = new IntegerProperty("Start Y", (int)shape.getStart().getY());
+            IntegerProperty startYProp = new IntegerProperty("Start y", (int)shape.getStart().getY());
             propertyTable.addProperty(startYProp);
 
-            IntegerProperty endXProp = new IntegerProperty("End X", (int)shape.getEnd().getX());
+            IntegerProperty endXProp = new IntegerProperty("End x", (int)shape.getEnd().getX());
             propertyTable.addProperty(endXProp);
 
-            IntegerProperty endYProp = new IntegerProperty("End Y", (int)shape.getEnd().getY());
+            IntegerProperty endYProp = new IntegerProperty("End y", (int)shape.getEnd().getY());
             propertyTable.addProperty(endYProp);
 
             int width = (int)(shape.getEnd().getX() - shape.getStart().getX());
@@ -176,15 +176,15 @@ public class PropertySheet extends PropertyPanel {
         }
 
         if (shape != null && shape.getShapeMode() == ShapeMode.Text) {
-            StringProperty textProp = new StringProperty("Text Content", shape.getText() != null ? shape.getText() : "");
+            StringProperty textProp = new StringProperty("Text", shape.getText() != null ? shape.getText() : "");
             propertyTable.addProperty(textProp);
 
             Font font = shape.getFont() != null ? shape.getFont() : appService.getFont();
             
-            StringProperty fontFamilyProp = new StringProperty("Font Family", font.getFamily());
+            StringProperty fontFamilyProp = new StringProperty("Font family", font.getFamily());
             propertyTable.addProperty(fontFamilyProp);
 
-            IntegerProperty fontSizeProp = new IntegerProperty("Font Size", font.getSize());
+            IntegerProperty fontSizeProp = new IntegerProperty("Font size", font.getSize());
             propertyTable.addProperty(fontSizeProp);
         }
 

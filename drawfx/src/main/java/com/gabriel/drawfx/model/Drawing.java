@@ -7,6 +7,7 @@ import lombok.Data;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+
 @Data
 public class Drawing {
     Point location;
@@ -33,9 +34,10 @@ public class Drawing {
     List<Shape> shapes;
     private Shape selectedShape = null;
     private String text = "Default text";
+    
     public Drawing(){
         location  = new Point(0,0);
-        color = Color.RED;
+        color = Color.BLACK;
         fill = Color.WHITE;
         font = new Font("Serif", Font.BOLD, 24);
         shapes = new ArrayList<>();

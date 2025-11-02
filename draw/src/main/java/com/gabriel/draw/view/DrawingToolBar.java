@@ -26,61 +26,38 @@ public class DrawingToolBar extends JToolBar {
     protected void addButtons() {
         JButton button = null;
         
-        button = makeNavigationButton("select", ActionCommand.SELECT, "Select and move shapes", ActionCommand.SELECT);
+        // Undo, Redo, Delete group
+        button = makeNavigationButton("undo", ActionCommand.UNDO, "Undo last action", "Undo");
+        add(button);
+
+        button = makeNavigationButton("redo", ActionCommand.REDO, "Redo last action", "Redo");
+        add(button);
+
+        button = makeNavigationButton("delete", ActionCommand.DELETE, "Delete selected shapes", "Delete");
         add(button);
 
         addSeparator();
 
-        button = makeNavigationButton("rectangle", ActionCommand.RECT, "Draw a rectangle",ActionCommand.RECT);
+        // Shape tools group
+        button = makeNavigationButton("rectangle", ActionCommand.RECT, "Draw a rectangle", "Rectangle");
         add(button);
 
-        button = makeNavigationButton("ellipse", ActionCommand.ELLIPSE,"Draw an ellipse",ActionCommand.ELLIPSE);
+        button = makeNavigationButton("ellipse", ActionCommand.ELLIPSE, "Draw an ellipse", "Ellipse");
         add(button);
 
-        button = makeNavigationButton("line", ActionCommand.LINE, "Draw a line",ActionCommand.LINE);
+        button = makeNavigationButton("line", ActionCommand.LINE, "Draw a line", "Line");
         add(button);
 
-        addSeparator();
-
-        button = makeNavigationButton("text",ActionCommand.TEXT,"Add text",ActionCommand.TEXT);
+        button = makeNavigationButton("select", ActionCommand.SELECT, "Select and move shapes", "Select");
         add(button);
 
-        button = makeNavigationButton("image",ActionCommand.IMAGE,"Add an image",ActionCommand.IMAGE);
+        button = makeNavigationButton("image", ActionCommand.IMAGE, "Add an image", "Image");
         add(button);
 
-        addSeparator();
-
-        button = makeNavigationButton("color", ActionCommand.COLOR, "Stroke color", "Color");
+        button = makeNavigationButton("text", ActionCommand.TEXT, "Add text", "Text");
         add(button);
 
-        button = makeNavigationButton("fill", ActionCommand.FILL, "Fill color", "Fill");
-        add(button);
-
-        addSeparator();
-
-        button = makeNavigationButton("font",ActionCommand.FONT,"Select font",ActionCommand.FONT);
-        add(button);
-
-        addSeparator();
-
-        button = new JButton("Delete");
-        button.setActionCommand(ActionCommand.DELETE);
-        button.setToolTipText("Delete selected shapes");
-        button.addActionListener(actionListener);
-        add(button);
-
-        addSeparator();
-
-        button = new JButton("Undo");
-        button.setActionCommand(ActionCommand.UNDO);
-        button.setToolTipText("Undo last action");
-        button.addActionListener(actionListener);
-        add(button);
-
-        button = new JButton("Redo");
-        button.setActionCommand(ActionCommand.REDO);
-        button.setToolTipText("Redo last action");
-        button.addActionListener(actionListener);
+        button = makeNavigationButton("font", ActionCommand.FONT, "Select font", "Font");
         add(button);
     }
 

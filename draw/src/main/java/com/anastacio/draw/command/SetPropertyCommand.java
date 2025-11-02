@@ -52,7 +52,17 @@ public class SetPropertyCommand implements Command {
                 Method setter = shape.getClass().getMethod(setterMethodName, int.class);
                 setter.invoke(shape, value);
             } catch (Exception e2) {
-                throw new RuntimeException("Failed to set property: " + propertyName, e2);
+                try {
+                    Method setter = shape.getClass().getMethod(setterMethodName, boolean.class);
+                    setter.invoke(shape, value);
+                } catch (Exception e3) {
+                    try {
+                        Method setter = shape.getClass().getMethod(setterMethodName, Integer.class);
+                        setter.invoke(shape, value);
+                    } catch (Exception e4) {
+                        throw new RuntimeException("Failed to set property: " + propertyName + ". Tried value.getClass(), int.class, boolean.class, and Integer.class", e4);
+                    }
+                }
             }
         }
     }

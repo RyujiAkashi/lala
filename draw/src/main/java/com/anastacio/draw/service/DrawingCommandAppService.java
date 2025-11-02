@@ -242,11 +242,9 @@ public class DrawingCommandAppService implements AppService {
     public void setXLocation(int xLocation) {
         Shape selectedShape = appService.getSelectedShape();
         if (selectedShape != null) {
-            Point oldLocation = new Point(selectedShape.getLocation());
-            selectedShape.getLocation().x = xLocation;
+            Point newLocation = new Point(xLocation, selectedShape.getLocation().y);
             Command command = new com.anastacio.draw.command.SetPropertyCommand(
-                selectedShape, "location", "setLocation", "getLocation", new Point(xLocation, selectedShape.getLocation().y));
-            selectedShape.setLocation(oldLocation);
+                selectedShape, "location", "setLocation", "getLocation", newLocation);
             CommandService.ExecuteCommand(command);
         } else {
             appService.setXLocation(xLocation);
@@ -262,10 +260,9 @@ public class DrawingCommandAppService implements AppService {
     public void setYLocation(int yLocation) {
         Shape selectedShape = appService.getSelectedShape();
         if (selectedShape != null) {
-            Point oldLocation = new Point(selectedShape.getLocation());
+            Point newLocation = new Point(selectedShape.getLocation().x, yLocation);
             Command command = new com.anastacio.draw.command.SetPropertyCommand(
-                selectedShape, "location", "setLocation", "getLocation", new Point(selectedShape.getLocation().x, yLocation));
-            selectedShape.setLocation(oldLocation);
+                selectedShape, "location", "setLocation", "getLocation", newLocation);
             CommandService.ExecuteCommand(command);
         } else {
             appService.setYLocation(yLocation);
@@ -443,14 +440,7 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setStartX(int startx) {
-        Shape selectedShape = appService.getSelectedShape();
-        if (selectedShape != null) {
-            Command command = new com.anastacio.draw.command.SetPropertyCommand(
-                selectedShape, "startx", "setStartx", "getStartx", startx);
-            CommandService.ExecuteCommand(command);
-        } else {
-            appService.setStartX(startx);
-        }
+        appService.setStartX(startx);
     }
 
     @Override
@@ -460,14 +450,7 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setStarty(int starty) {
-        Shape selectedShape = appService.getSelectedShape();
-        if (selectedShape != null) {
-            Command command = new com.anastacio.draw.command.SetPropertyCommand(
-                selectedShape, "starty", "setStarty", "getStarty", starty);
-            CommandService.ExecuteCommand(command);
-        } else {
-            appService.setStarty(starty);
-        }
+        appService.setStarty(starty);
     }
 
     @Override
@@ -477,14 +460,7 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setEndx(int endx) {
-        Shape selectedShape = appService.getSelectedShape();
-        if (selectedShape != null) {
-            Command command = new com.anastacio.draw.command.SetPropertyCommand(
-                selectedShape, "endx", "setEndx", "getEndx", endx);
-            CommandService.ExecuteCommand(command);
-        } else {
-            appService.setEndx(endx);
-        }
+        appService.setEndx(endx);
     }
 
     @Override
@@ -494,14 +470,7 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setEndy(int endy) {
-        Shape selectedShape = appService.getSelectedShape();
-        if (selectedShape != null) {
-            Command command = new com.anastacio.draw.command.SetPropertyCommand(
-                selectedShape, "endy", "setEndy", "getEndy", endy);
-            CommandService.ExecuteCommand(command);
-        } else {
-            appService.setEndy(endy);
-        }
+        appService.setEndy(endy);
     }
 
     @Override

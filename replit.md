@@ -24,6 +24,34 @@ The application is configured to run automatically through the "GoDraw Applicati
 Command: `mvn -pl draw exec:java`
 
 ## Recent Changes
+- **2025-11-02 (Latest Session)**: Critical bug fixes and feature completions
+  - **SetPropertyCommand Reflection Fix:**
+    - Fixed SetPropertyCommand to properly iterate through multiple parameter types (Color, Font, Point, String, boolean, int)
+    - Color objects are now correctly set via reflection instead of being converted to strings
+    - All property changes now work correctly with undo/redo functionality
+  - **Alpha Transparency Support:**
+    - Implemented alpha property handlers for Fore Alpha, Fill Alpha, Start Alpha, and End Alpha
+    - Property sheet now allows users to control transparency for all color properties
+    - Alpha values are properly preserved when creating Color objects from RGB components
+  - **Line Style Command Pattern Integration:**
+    - Added setLineStyle/getLineStyle methods to AppService interface and implementations
+    - Line Style changes now go through DrawingCommandAppService with SetPropertyCommand support
+    - Line style changes are now undoable/redoable and persist to Drawing defaults for new shapes
+    - Fixed PropertyEventListener to delegate line style changes to appService instead of direct mutation
+  - **Text Gradient Rendering Fix:**
+    - Fixed TextRenderer to use proper coordinates relative to shape location
+    - Gradient paint now correctly displays on text shapes with start/end colors
+    - Text gradients render at the shape's actual position instead of absolute coordinates
+  - **Undo/Redo Enhancements:**
+    - Added redoStack.clear() to CommandService.ExecuteCommand() method
+    - Redo stack is now properly cleared when new commands are executed, preventing invalid redo operations
+    - Undo/redo works correctly for all property changes including color, thickness, line style, position, size
+  - **New Shape Creation:**
+    - DrawingController now properly sets thickness and lineStyle when creating new shapes
+    - New shapes inherit current Drawing defaults for thickness and line style
+    - All shape properties (color, fill, thickness, line style, font) properly persist to new shapes
+  - All fixes tested and verified working - application builds and runs successfully
+
 - **2025-11-02**: Project migrated and enhanced for Replit environment
   - Installed Java (GraalVM)
   - Successfully built all Maven modules

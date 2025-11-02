@@ -73,11 +73,13 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setColor(Color color) {
-        Shape selectedShape = appService.getSelectedShape();
-        if (selectedShape != null) {
-            Command command = new com.anastacio.draw.command.SetPropertyCommand(
-                selectedShape, "color", "setColor", "getColor", color);
-            CommandService.ExecuteCommand(command);
+        List<Shape> selectedShapes = appService.getSelectedShapes();
+        if (selectedShapes != null && !selectedShapes.isEmpty()) {
+            for (Shape shape : selectedShapes) {
+                Command command = new com.anastacio.draw.command.SetPropertyCommand(
+                    shape, "color", "setColor", "getColor", color);
+                CommandService.ExecuteCommand(command);
+            }
         } else {
             appService.setColor(color);
         }
@@ -90,11 +92,13 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setFill(Color color) {
-        Shape selectedShape = appService.getSelectedShape();
-        if (selectedShape != null) {
-            Command command = new com.anastacio.draw.command.SetPropertyCommand(
-                selectedShape, "fill", "setFill", "getFill", color);
-            CommandService.ExecuteCommand(command);
+        List<Shape> selectedShapes = appService.getSelectedShapes();
+        if (selectedShapes != null && !selectedShapes.isEmpty()) {
+            for (Shape shape : selectedShapes) {
+                Command command = new com.anastacio.draw.command.SetPropertyCommand(
+                    shape, "fill", "setFill", "getFill", color);
+                CommandService.ExecuteCommand(command);
+            }
         } else {
             appService.setFill(color);
         }
@@ -217,11 +221,13 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setThickness(int thickness) {
-        Shape selectedShape = appService.getSelectedShape();
-        if (selectedShape != null) {
-            Command command = new com.anastacio.draw.command.SetPropertyCommand(
-                selectedShape, "thickness", "setThickness", "getThickness", thickness);
-            CommandService.ExecuteCommand(command);
+        List<Shape> selectedShapes = appService.getSelectedShapes();
+        if (selectedShapes != null && !selectedShapes.isEmpty()) {
+            for (Shape shape : selectedShapes) {
+                Command command = new com.anastacio.draw.command.SetPropertyCommand(
+                    shape, "thickness", "setThickness", "getThickness", thickness);
+                CommandService.ExecuteCommand(command);
+            }
         } else {
             appService.setThickness(thickness);
         }
@@ -273,11 +279,13 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setWidth(int width) {
-        Shape selectedShape = appService.getSelectedShape();
-        if (selectedShape != null) {
-            Command command = new com.anastacio.draw.command.SetPropertyCommand(
-                selectedShape, "width", "setWidth", "getWidth", width);
-            CommandService.ExecuteCommand(command);
+        List<Shape> selectedShapes = appService.getSelectedShapes();
+        if (selectedShapes != null && !selectedShapes.isEmpty()) {
+            for (Shape shape : selectedShapes) {
+                Command command = new com.anastacio.draw.command.SetPropertyCommand(
+                    shape, "width", "setWidth", "getWidth", width);
+                CommandService.ExecuteCommand(command);
+            }
         } else {
             appService.setWidth(width);
         }
@@ -290,11 +298,13 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setHeight(int height) {
-        Shape selectedShape = appService.getSelectedShape();
-        if (selectedShape != null) {
-            Command command = new com.anastacio.draw.command.SetPropertyCommand(
-                selectedShape, "height", "setHeight", "getHeight", height);
-            CommandService.ExecuteCommand(command);
+        List<Shape> selectedShapes = appService.getSelectedShapes();
+        if (selectedShapes != null && !selectedShapes.isEmpty()) {
+            for (Shape shape : selectedShapes) {
+                Command command = new com.anastacio.draw.command.SetPropertyCommand(
+                    shape, "height", "setHeight", "getHeight", height);
+                CommandService.ExecuteCommand(command);
+            }
         } else {
             appService.setHeight(height);
         }
@@ -357,11 +367,13 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setStartColor(Color color) {
-        Shape selectedShape = appService.getSelectedShape();
-        if (selectedShape != null) {
-            Command command = new com.anastacio.draw.command.SetPropertyCommand(
-                selectedShape, "startColor", "setStartColor", "getStartColor", color);
-            CommandService.ExecuteCommand(command);
+        List<Shape> selectedShapes = appService.getSelectedShapes();
+        if (selectedShapes != null && !selectedShapes.isEmpty()) {
+            for (Shape shape : selectedShapes) {
+                Command command = new com.anastacio.draw.command.SetPropertyCommand(
+                    shape, "startColor", "setStartColor", "getStartColor", color);
+                CommandService.ExecuteCommand(command);
+            }
         } else {
             appService.setStartColor(color);
         }
@@ -374,11 +386,13 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setEndColor(Color color) {
-        Shape selectedShape = appService.getSelectedShape();
-        if (selectedShape != null) {
-            Command command = new com.anastacio.draw.command.SetPropertyCommand(
-                selectedShape, "endColor", "setEndColor", "getEndColor", color);
-            CommandService.ExecuteCommand(command);
+        List<Shape> selectedShapes = appService.getSelectedShapes();
+        if (selectedShapes != null && !selectedShapes.isEmpty()) {
+            for (Shape shape : selectedShapes) {
+                Command command = new com.anastacio.draw.command.SetPropertyCommand(
+                    shape, "endColor", "setEndColor", "getEndColor", color);
+                CommandService.ExecuteCommand(command);
+            }
         } else {
             appService.setEndColor(color);
         }
@@ -391,11 +405,13 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setIsGradient(boolean yes) {
-        Shape selectedShape = appService.getSelectedShape();
-        if (selectedShape != null) {
-            Command command = new com.anastacio.draw.command.SetPropertyCommand(
-                selectedShape, "gradient", "setGradient", "isGradient", yes);
-            CommandService.ExecuteCommand(command);
+        List<Shape> selectedShapes = appService.getSelectedShapes();
+        if (selectedShapes != null && !selectedShapes.isEmpty()) {
+            for (Shape shape : selectedShapes) {
+                Command command = new com.anastacio.draw.command.SetPropertyCommand(
+                    shape, "gradient", "setGradient", "isGradient", yes);
+                CommandService.ExecuteCommand(command);
+            }
         } else {
             appService.setIsGradient(yes);
         }
@@ -408,11 +424,13 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setIsVisible(boolean yes) {
-        Shape selectedShape = appService.getSelectedShape();
-        if (selectedShape != null) {
-            Command command = new com.anastacio.draw.command.SetPropertyCommand(
-                selectedShape, "visible", "setVisible", "isVisible", yes);
-            CommandService.ExecuteCommand(command);
+        List<Shape> selectedShapes = appService.getSelectedShapes();
+        if (selectedShapes != null && !selectedShapes.isEmpty()) {
+            for (Shape shape : selectedShapes) {
+                Command command = new com.anastacio.draw.command.SetPropertyCommand(
+                    shape, "visible", "setVisible", "isVisible", yes);
+                CommandService.ExecuteCommand(command);
+            }
         } else {
             appService.setIsVisible(yes);
         }

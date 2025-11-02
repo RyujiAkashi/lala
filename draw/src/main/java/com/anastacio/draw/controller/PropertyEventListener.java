@@ -2,9 +2,12 @@ package com.anastacio.draw.controller;
 
 import com.anastacio.property.event.PropertyEventAdapter;
 import com.anastacio.property.property.Property;
+import com.anastacio.property.property.selection.Item;
 import com.anastacio.drawfx.service.AppService;
+import com.anastacio.drawfx.model.Shape;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
 
 public class PropertyEventListener extends PropertyEventAdapter {
     private AppService appService;
@@ -59,6 +62,54 @@ public class PropertyEventListener extends PropertyEventAdapter {
             Font font = appService.getFont();
             Font newFont = new Font(font.getFamily(), font.getStyle(), (int) property.getValue());
             appService.setFont(newFont);
+        } else if (property.getName().equals("Fore Alpha")) {
+            Shape selectedShape = appService.getSelectedShape();
+            if (selectedShape != null) {
+                int alpha = (int) property.getValue();
+                Color currentColor = selectedShape.getColor();
+                if (currentColor != null) {
+                    Color newColor = new Color(currentColor.getRed(), currentColor.getGreen(), 
+                        currentColor.getBlue(), alpha);
+                    appService.setColor(newColor);
+                }
+            }
+        } else if (property.getName().equals("Fill Alpha")) {
+            Shape selectedShape = appService.getSelectedShape();
+            if (selectedShape != null) {
+                int alpha = (int) property.getValue();
+                Color currentColor = selectedShape.getFill();
+                if (currentColor != null) {
+                    Color newColor = new Color(currentColor.getRed(), currentColor.getGreen(), 
+                        currentColor.getBlue(), alpha);
+                    appService.setFill(newColor);
+                }
+            }
+        } else if (property.getName().equals("Start Alpha")) {
+            Shape selectedShape = appService.getSelectedShape();
+            if (selectedShape != null) {
+                int alpha = (int) property.getValue();
+                Color currentColor = selectedShape.getStartColor();
+                if (currentColor != null) {
+                    Color newColor = new Color(currentColor.getRed(), currentColor.getGreen(), 
+                        currentColor.getBlue(), alpha);
+                    appService.setStartColor(newColor);
+                }
+            }
+        } else if (property.getName().equals("End Alpha")) {
+            Shape selectedShape = appService.getSelectedShape();
+            if (selectedShape != null) {
+                int alpha = (int) property.getValue();
+                Color currentColor = selectedShape.getEndColor();
+                if (currentColor != null) {
+                    Color newColor = new Color(currentColor.getRed(), currentColor.getGreen(), 
+                        currentColor.getBlue(), alpha);
+                    appService.setEndColor(newColor);
+                }
+            }
+        } else if (property.getName().equals("Line Style")) {
+            Item item = (Item) property.getValue();
+            String lineStyle = (String) item.getValue();
+            appService.setLineStyle(lineStyle);
         }
     }
 }

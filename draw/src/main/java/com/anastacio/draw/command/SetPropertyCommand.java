@@ -44,26 +44,32 @@ public class SetPropertyCommand implements Command {
     }
 
     private void setProperty(Object value) {
-        try {
-            Method setter = shape.getClass().getMethod(setterMethodName, value.getClass());
-            setter.invoke(shape, value);
-        } catch (Exception e) {
+        if (value == null) {
+            return;
+        }
+        
+        Class<?>[] parameterTypes = {
+            value.getClass(),
+            java.awt.Color.class,
+            java.awt.Point.class,
+            java.awt.Font.class,
+            int.class,
+            Integer.class,
+            boolean.class,
+            Boolean.class,
+            String.class
+        };
+        
+        for (Class<?> paramType : parameterTypes) {
             try {
-                Method setter = shape.getClass().getMethod(setterMethodName, int.class);
+                Method setter = shape.getClass().getMethod(setterMethodName, paramType);
                 setter.invoke(shape, value);
-            } catch (Exception e2) {
-                try {
-                    Method setter = shape.getClass().getMethod(setterMethodName, boolean.class);
-                    setter.invoke(shape, value);
-                } catch (Exception e3) {
-                    try {
-                        Method setter = shape.getClass().getMethod(setterMethodName, Integer.class);
-                        setter.invoke(shape, value);
-                    } catch (Exception e4) {
-                        throw new RuntimeException("Failed to set property: " + propertyName + ". Tried value.getClass(), int.class, boolean.class, and Integer.class", e4);
-                    }
-                }
+                return;
+            } catch (NoSuchMethodException | IllegalAccessException | java.lang.reflect.InvocationTargetException e) {
             }
         }
+        
+        throw new RuntimeException("Failed to set property: " + propertyName + 
+            ". No compatible setter method found for value type: " + value.getClass().getName());
     }
 }

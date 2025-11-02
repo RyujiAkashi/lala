@@ -25,6 +25,7 @@ public class Drawing {
     Point end;
     int r;
     int thickness  = 1;
+    private String lineStyle = "Solid";
     private ShapeMode shapeMode = ShapeMode.Rectangle;
     private DrawMode drawMode = DrawMode.Idle;
     private int SearchRadius = 5;

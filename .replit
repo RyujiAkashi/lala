@@ -27,4 +27,4 @@ outputType = "vnc"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "mvn -pl draw exec:java"
+args = "mvn clean install -DskipTests && mvn exec:java -pl draw -Dexec.mainClass=\"com.anastacio.draw.Main\""

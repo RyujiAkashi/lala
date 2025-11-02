@@ -34,10 +34,10 @@ public class TextRenderer extends ShapeRenderer {
             g2.drawRect(x, y, width, height);
         } else {
             if (shape.isGradient() && shape.getStartColor() != null && shape.getEndColor() != null && shape.getStart() != null && shape.getEnd() != null) {
-                int startX = shape.getStart().x;
-                int startY = shape.getStart().y;
-                int endX = shape.getEnd().x;
-                int endY = shape.getEnd().y;
+                int startX = shape.getLocation().x + shape.getStart().x;
+                int startY = shape.getLocation().y + shape.getStart().y;
+                int endX = shape.getLocation().x + shape.getEnd().x;
+                int endY = shape.getLocation().y + shape.getEnd().y;
                 
                 GradientPaint gradient = new GradientPaint(
                     startX, startY, shape.getStartColor(),

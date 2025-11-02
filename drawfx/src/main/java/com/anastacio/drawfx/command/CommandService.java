@@ -8,6 +8,7 @@ public class CommandService {
     public static void ExecuteCommand(Command command) {
         command.execute();
         undoStack.push(command);
+        redoStack.clear();
     }
 
     public static void undo() {

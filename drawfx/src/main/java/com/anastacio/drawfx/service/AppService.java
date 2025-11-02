@@ -58,6 +58,9 @@ public interface AppService {
 
     void setThickness(int thickness);
     int getThickness();
+    
+    void setLineStyle(String lineStyle);
+    String getLineStyle();
 
     void setXLocation(int xLocation);
     int getXLocation();

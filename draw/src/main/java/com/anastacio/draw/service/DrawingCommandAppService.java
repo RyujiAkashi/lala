@@ -239,6 +239,25 @@ public class DrawingCommandAppService implements AppService {
     }
 
     @Override
+    public void setLineStyle(String lineStyle) {
+        List<Shape> selectedShapes = appService.getSelectedShapes();
+        if (selectedShapes != null && !selectedShapes.isEmpty()) {
+            for (Shape shape : selectedShapes) {
+                Command command = new com.anastacio.draw.command.SetPropertyCommand(
+                    shape, "lineStyle", "setLineStyle", "getLineStyle", lineStyle);
+                CommandService.ExecuteCommand(command);
+            }
+        } else {
+            appService.setLineStyle(lineStyle);
+        }
+    }
+
+    @Override
+    public String getLineStyle() {
+        return appService.getLineStyle();
+    }
+
+    @Override
     public void setXLocation(int xLocation) {
         Shape selectedShape = appService.getSelectedShape();
         if (selectedShape != null) {

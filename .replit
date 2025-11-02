@@ -27,4 +27,4 @@ outputType = "vnc"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "mvn -pl draw exec:java"
+args = "mvn clean install && mvn -pl draw exec:java"

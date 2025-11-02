@@ -1,4 +1,4 @@
-modules = ["java-graalvm22.3", "java-openjdk-21"]
+modules = ["java-graalvm22.3", "java-openjdk-21", "java-graalvm"]
 [agent]
 expertMode = true
 
@@ -21,9 +21,9 @@ args = "GoDraw Application"
 name = "GoDraw Application"
 author = "agent"
 
+[workflows.workflow.metadata]
+outputType = "vnc"
+
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "mvn -pl draw exec:java"
-
-[workflows.workflow.metadata]
-outputType = "vnc"

@@ -11,6 +11,7 @@ import java.awt.*;
 public abstract class Shape {
     boolean selected = false;
     boolean visible = true;
+    boolean pinned = false;
     private SelectionMode selectionMode = SelectionMode.None;
     private ShapeMode shapeMode = ShapeMode.Rectangle;
     private int r = 2;
@@ -21,6 +22,7 @@ public abstract class Shape {
     private Color color = Color.RED;
     private Color fill;
     private int thickness;
+    private String lineStyle = "Solid";
     String text;
     Font font;
     String imageFilename;

@@ -18,4 +18,7 @@ public class ActionCommand {
     static final public String SAVEAS = "saveas";
     static final public String NEW= "new";
     static final public String DELETE = "delete";
+    static final public String PIN = "pin";
+    static final public String LINE_STYLE = "linestyle";
+    static final public String LINE_WIDTH = "linewidth";
 }

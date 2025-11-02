@@ -132,6 +132,25 @@ public class DrawingMenuBar extends JMenuBar {
         menuItem.addActionListener(actionListener);
         menu.add(menuItem);
 
+        menu.addSeparator();
+
+        menuItem = new JMenuItem("Line Style");
+        menuItem.setActionCommand(ActionCommand.LINE_STYLE);
+        menuItem.addActionListener(actionListener);
+        menu.add(menuItem);
+
+        menuItem = new JMenuItem("Line Width");
+        menuItem.setActionCommand(ActionCommand.LINE_WIDTH);
+        menuItem.addActionListener(actionListener);
+        menu.add(menuItem);
+
+        menu.addSeparator();
+
+        menuItem = new JMenuItem("Pin/Unpin");
+        menuItem.setActionCommand(ActionCommand.PIN);
+        menuItem.addActionListener(actionListener);
+        menu.add(menuItem);
+
         this.add(menu);
 
     }

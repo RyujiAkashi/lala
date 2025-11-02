@@ -121,6 +121,17 @@ public class ActionController implements ActionListener {
                 );
                 if (result == JOptionPane.YES_OPTION) {
                     drawing.getShapes().clear();
+                    drawing.setColor(Color.BLACK);
+                    drawing.setFill(null);
+                    drawing.setFont(new Font("Arial", Font.PLAIN, 12));
+                    drawing.setText("");
+                    drawing.setThickness(1);
+                    drawing.setGradient(false);
+                    drawing.setStartColor(Color.WHITE);
+                    drawing.setEndColor(Color.BLACK);
+                    drawing.setVisible(true);
+                    drawing.setFilename(null);
+                    frame.setTitle("GoDraw - Untitled");
                 }
                 component.repaint();
             }
@@ -153,6 +164,74 @@ public class ActionController implements ActionListener {
         } else if (ActionCommand.DELETE.equals(cmd)) {
             appService.delete();
             component.repaint();
+        } else if (ActionCommand.PIN.equals(cmd)) {
+            if (drawing.getSelectedShape() != null) {
+                boolean newPinnedState = !drawing.getSelectedShape().isPinned();
+                for (com.anastacio.drawfx.model.Shape shape : drawing.getShapes()) {
+                    if (shape.isSelected()) {
+                        shape.setPinned(newPinnedState);
+                    }
+                }
+                String message = newPinnedState ? "Selected shapes pinned" : "Selected shapes unpinned";
+                JOptionPane.showMessageDialog(frame, message, "Pin Status", JOptionPane.INFORMATION_MESSAGE);
+                component.repaint();
+            } else {
+                JOptionPane.showMessageDialog(frame, "No shapes selected", "Pin Error", JOptionPane.WARNING_MESSAGE);
+            }
+        } else if (ActionCommand.LINE_STYLE.equals(cmd)) {
+            String[] styles = {"Solid", "Dashed", "Dotted", "Dash-Dot"};
+            String currentStyle = "Solid";
+            if (drawing.getSelectedShape() != null) {
+                currentStyle = drawing.getSelectedShape().getLineStyle();
+            }
+            String selectedStyle = (String) JOptionPane.showInputDialog(
+                frame,
+                "Select line style:",
+                "Line Style",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                styles,
+                currentStyle
+            );
+            if (selectedStyle != null) {
+                if (drawing.getSelectedShape() != null) {
+                    for (com.anastacio.drawfx.model.Shape shape : drawing.getShapes()) {
+                        if (shape.isSelected()) {
+                            shape.setLineStyle(selectedStyle);
+                        }
+                    }
+                }
+                component.repaint();
+            }
+        } else if (ActionCommand.LINE_WIDTH.equals(cmd)) {
+            int currentWidth = 1;
+            if (drawing.getSelectedShape() != null) {
+                currentWidth = drawing.getSelectedShape().getThickness();
+            }
+            String input = JOptionPane.showInputDialog(
+                frame,
+                "Enter line width (1-20):",
+                String.valueOf(currentWidth)
+            );
+            if (input != null) {
+                try {
+                    int width = Integer.parseInt(input);
+                    if (width >= 1 && width <= 20) {
+                        if (drawing.getSelectedShape() != null) {
+                            for (com.anastacio.drawfx.model.Shape shape : drawing.getShapes()) {
+                                if (shape.isSelected()) {
+                                    shape.setThickness(width);
+                                }
+                            }
+                        }
+                        component.repaint();
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "Width must be between 1 and 20", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(frame, "Please enter a valid number", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
     }
     

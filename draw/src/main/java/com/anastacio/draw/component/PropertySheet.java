@@ -183,6 +183,29 @@ public class PropertySheet extends PropertyPanel {
         propertyTable.addProperty(lineThicknessProp);
 
         if (shape != null) {
+            String currentLineStyle = shape.getLineStyle();
+            ArrayList<Item<String>> lineStyles = new ArrayList<>(Arrays.asList(
+                new Item<String>("Solid", "Solid"),
+                new Item<String>("Dashed", "Dashed"),
+                new Item<String>("Dotted", "Dotted"),
+                new Item<String>("Dash-Dot", "Dash-Dot")
+            ));
+            SelectionProperty<String> lineStyleProp = new SelectionProperty<String>("Line Style", lineStyles);
+            propertyTable.addProperty(lineStyleProp);
+            
+            SelectionCellComponent lineStyleComponent = propertyTable.getSelectionCellComponent();
+            for (Item item : lineStyles) {
+                if (item.getValue().equals(currentLineStyle)) {
+                    lineStyleComponent.setCellEditorValue(item);
+                    break;
+                }
+            }
+            
+            BooleanProperty isPinnedProp = new BooleanProperty("Pinned", shape.isPinned());
+            propertyTable.addProperty(isPinnedProp);
+        }
+
+        if (shape != null) {
             IntegerProperty xLocationProp = new IntegerProperty("X Location", appService.getXLocation());
             propertyTable.addProperty(xLocationProp);
 

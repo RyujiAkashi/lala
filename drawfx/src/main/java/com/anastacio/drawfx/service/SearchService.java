@@ -18,9 +18,10 @@ public final class SearchService {
 
     public void search(AppService appService, Point p, boolean single) {
         Drawing drawing = appService.getDrawing();
-        drawing.setSelectedShape(null);
         List<Shape> shapes = drawing.getShapes();
         int r = appService.getSearchRadius();
+        boolean foundShape = false;
+        Shape clickedShape = null;
 
         for (Shape shape : shapes) {
             Point loc = shape.getLocation();
@@ -46,14 +47,44 @@ public final class SearchService {
                 } else {
                     shape.setSelectionMode(SelectionMode.None);
                 }
-                shape.setSelected(true);
-                drawing.setSelectedShape( shape);
+                
+                if (!single) {
+                    shape.setSelected(!shape.isSelected());
+                } else {
+                    shape.setSelected(true);
+                }
+                clickedShape = shape;
+                foundShape = true;
+                break;
             }
-            else {
-                if (single) {
-                    if(shape.isSelected()) {
-                        shape.setSelected(false);
+        }
+        
+        if (single && foundShape) {
+            for (Shape shape : shapes) {
+                if (shape != clickedShape && shape.isSelected()) {
+                    shape.setSelected(false);
+                }
+            }
+        }
+        
+        if (foundShape) {
+            if (clickedShape.isSelected()) {
+                drawing.setSelectedShape(clickedShape);
+            } else {
+                Shape anySelected = null;
+                for (Shape shape : shapes) {
+                    if (shape.isSelected()) {
+                        anySelected = shape;
+                        break;
                     }
+                }
+                drawing.setSelectedShape(anySelected);
+            }
+        } else if (single) {
+            drawing.setSelectedShape(null);
+            for (Shape shape : shapes) {
+                if(shape.isSelected()) {
+                    shape.setSelected(false);
                 }
             }
         }

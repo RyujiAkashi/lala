@@ -235,6 +235,16 @@ public class DrawingFrame extends JFrame {
             else if(property.getName().equals("Image Path")){
                 appService.setImageFilename((String)property.getValue());
             }
+            else if(property.getName().equals("Line Style")){
+                if(shape != null) {
+                    shape.setLineStyle((String)property.getValue());
+                }
+            }
+            else if(property.getName().equals("Pinned")){
+                if(shape != null) {
+                    shape.setPinned((Boolean)property.getValue());
+                }
+            }
 
             drawingView.repaint();
         }

@@ -24,7 +24,12 @@ import java.awt.event.*;
 
 public class DrawingController  implements MouseListener, MouseMotionListener, KeyListener {
     Point start;
+    Point originalStart;
     private Point end;
+    private java.util.Map<Shape, Point> originalPositions = new java.util.HashMap<>();
+    private Point originalScaleLocation;
+    private int originalScaleWidth;
+    private int originalScaleHeight;
 
     private final AppService appService;
     private final Drawing drawing;
@@ -56,9 +61,26 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
     public void mousePressed(MouseEvent e) {
         if(appService.getDrawMode() == DrawMode.Idle) {
             start = e.getPoint();
+            originalStart = new Point(start);
+            originalPositions.clear();
             ShapeMode currentShapeMode = appService.getShapeMode();
             if(currentShapeMode == ShapeMode.Select) {
                 appService.search(start, !e.isControlDown());
+                Shape selectedShape = drawing.getSelectedShape();
+                if(selectedShape != null && !selectedShape.isPinned()){
+                    if(selectedShape.getSelectionMode() == SelectionMode.None){
+                        List<Shape> shapes = drawing.getShapes();
+                        for(Shape shape : shapes) {
+                            if (shape.isSelected() && !shape.isPinned()) {
+                                originalPositions.put(shape, new Point(shape.getLocation()));
+                            }
+                        }
+                    } else {
+                        originalScaleLocation = new Point(selectedShape.getLocation());
+                        originalScaleWidth = selectedShape.getWidth();
+                        originalScaleHeight = selectedShape.getHeight();
+                    }
+                }
 
             }
             else {
@@ -111,16 +133,25 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
                 Shape selectedShape = drawing.getSelectedShape();
                 if (selectedShape != null) {
                     if (selectedShape.getSelectionMode() == SelectionMode.None) {
-                        List<Shape> shapes = drawing.getShapes();
-                        for (Shape shape : shapes) {
-                            if (shape.isSelected()) {
-                                shape.getRendererService().render(drawingView.getGraphics(), shape, true);
-                                appService.move(shape, start, end);
-                                shape.getRendererService().render(drawingView.getGraphics(), shape, false);
+                        if (!originalStart.equals(end)) {
+                            for (Shape shape : originalPositions.keySet()) {
+                                Point originalPos = originalPositions.get(shape);
+                                shape.getLocation().x = originalPos.x;
+                                shape.getLocation().y = originalPos.y;
+                            }
+                            for (Shape shape : originalPositions.keySet()) {
+                                appService.move(shape, originalStart, end);
                             }
                         }
+                        drawingView.repaint();
                     } else {
-                        appService.scale(selectedShape, start, end);
+                        if (!originalStart.equals(end)) {
+                            selectedShape.getLocation().x = originalScaleLocation.x;
+                            selectedShape.getLocation().y = originalScaleLocation.y;
+                            selectedShape.setWidth(originalScaleWidth);
+                            selectedShape.setHeight(originalScaleHeight);
+                            appService.scale(selectedShape, originalStart, end);
+                        }
                         Normalizer.normalize(selectedShape);
                         drawingView.repaint();
                     }
@@ -165,19 +196,54 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
             end = e.getPoint();
             if(drawing.getShapeMode() == ShapeMode.Select){
                 Shape selectedShape = drawing.getSelectedShape();
-                if(selectedShape != null){
+                if(selectedShape != null && !selectedShape.isPinned()){
                     if(selectedShape.getSelectionMode() == SelectionMode.None){
                         List<Shape> shapes =drawing.getShapes();
                         for(Shape shape : shapes) {
-                            if (shape.isSelected()) {
+                            if (shape.isSelected() && !shape.isPinned()) {
                                 shape.getRendererService().render(drawingView.getGraphics(), shape, true);
-                                appService.move(shape, start, end);
+                                int dx = end.x - start.x;
+                                int dy = end.y - start.y;
+                                shape.getLocation().x += dx;
+                                shape.getLocation().y += dy;
                                 shape.getRendererService().render(drawingView.getGraphics(), shape, true);
                             }
                         }
                     }
                     else {
-                        appService.scale(selectedShape, start, end);
+                        selectedShape.getRendererService().render(drawingView.getGraphics(), selectedShape, true);
+                        int dx = end.x - start.x;
+                        int dy = end.y - start.y;
+                        int height = selectedShape.getHeight();
+                        int width = selectedShape.getWidth();
+                        if(selectedShape.getSelectionMode() == SelectionMode.UpperLeft) {
+                            selectedShape.getLocation().x += dx;
+                            selectedShape.getLocation().y += dy;
+                            selectedShape.setWidth(width - dx);
+                            selectedShape.setHeight(height - dy);
+                        } if(selectedShape.getSelectionMode() == SelectionMode.LowerLeft) {
+                            selectedShape.getLocation().x += dx;
+                            selectedShape.setWidth(width -dx);
+                            selectedShape.setHeight(height + dy);
+                        } else if(selectedShape.getSelectionMode() == SelectionMode.UpperRight){
+                            selectedShape.getLocation().y += dy;
+                            selectedShape.setWidth(width + dx);
+                            selectedShape.setHeight(height - dy);
+                        } if(selectedShape.getSelectionMode() == SelectionMode.LowerRight){
+                            selectedShape.setWidth(width + dx);
+                            selectedShape.setHeight(height+ dy);
+                        } else if(selectedShape.getSelectionMode() == SelectionMode.MiddleRight){
+                            selectedShape.setWidth(width + dx);
+                        } else if(selectedShape.getSelectionMode() == SelectionMode.MiddleLeft){
+                            selectedShape.setWidth(width - dx);
+                            selectedShape.getLocation().x += dx;
+                        } else if(selectedShape.getSelectionMode() == SelectionMode.MiddleTop) {
+                            selectedShape.setHeight(height - dy);
+                            selectedShape.getLocation().y += dy;
+                        } else if(selectedShape.getSelectionMode() == SelectionMode.MiddleBottom){
+                            selectedShape.setHeight(height + dy);
+                        }
+                        selectedShape.getRendererService().render(drawingView.getGraphics(), selectedShape, true);
                     }
                 }
                 start = end;

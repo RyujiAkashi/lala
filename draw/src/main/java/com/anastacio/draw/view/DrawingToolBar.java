@@ -73,6 +73,18 @@ public class DrawingToolBar extends JToolBar {
         button = makeNavigationButton("font", ActionCommand.FONT, "Select font", "Font");
         add(button);
 
+        addSeparator();
+        addSeparator();
+
+        button = makeNavigationButton("pin", ActionCommand.PIN, "Pin/Unpin selected shapes", "Pin");
+        add(button);
+
+        button = makeNavigationButton("linestyle", ActionCommand.LINE_STYLE, "Set line style", "Line Style");
+        add(button);
+
+        button = makeNavigationButton("linewidth", ActionCommand.LINE_WIDTH, "Set line width", "Line Width");
+        add(button);
+
     }
 
     protected JButton makeNavigationButton(String imageName,

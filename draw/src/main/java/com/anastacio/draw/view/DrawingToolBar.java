@@ -39,6 +39,8 @@ public class DrawingToolBar extends JToolBar {
 
         addSeparator();
         addSeparator();
+        addSeparator();
+        addSeparator();
 
         // Shape tools group
         button = makeNavigationButton("rectangle", ActionCommand.RECT, "Draw a rectangle", "Rectangle");
@@ -52,6 +54,8 @@ public class DrawingToolBar extends JToolBar {
 
         addSeparator();
         addSeparator();
+        addSeparator();
+        addSeparator();
 
         // New buttons: Color and Fill
         button = makeNavigationButton("color", ActionCommand.COLOR, "Choose color", "Color");
@@ -60,6 +64,14 @@ public class DrawingToolBar extends JToolBar {
         button = makeNavigationButton("fill", ActionCommand.FILL, "Toggle fill mode", "Fill");
         add(button);
 
+        button = makeNavigationButton("linestyle", ActionCommand.LINE_STYLE, "Set line style", "Line Style");
+        add(button);
+
+        button = makeNavigationButton("linewidth", ActionCommand.LINE_WIDTH, "Set line width", "Line Width");
+        add(button);
+
+        addSeparator();
+        addSeparator();
         addSeparator();
         addSeparator();
 
@@ -75,15 +87,13 @@ public class DrawingToolBar extends JToolBar {
 
         addSeparator();
         addSeparator();
+        addSeparator();
+        addSeparator();
 
-        button = makeNavigationButton("pin", ActionCommand.PIN, "Pin/Unpin selected shapes", "Pin");
+        button = makeNavigationButton("lock", ActionCommand.PIN, "Pin/Unpin selected shapes", "Pin");
         add(button);
 
-        button = makeNavigationButton("linestyle", ActionCommand.LINE_STYLE, "Set line style", "Line Style");
-        add(button);
 
-        button = makeNavigationButton("linewidth", ActionCommand.LINE_WIDTH, "Set line width", "Line Width");
-        add(button);
 
     }
 

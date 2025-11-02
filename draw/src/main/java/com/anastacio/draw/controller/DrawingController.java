@@ -181,11 +181,15 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
 //              currentShape.getRendererService().render(drawingView.getGraphics(), currentShape, false);
                 drawing.setSelectedShape(currentShape);
                 drawing.setShapeMode(ShapeMode.Select);
+                if (appService instanceof com.anastacio.draw.service.DrawingAppService) {
+                    ((com.anastacio.draw.service.DrawingAppService) appService).notifySelectionChanged();
+                } else if (appService instanceof com.anastacio.draw.service.DrawingCommandAppService) {
+                    ((com.anastacio.draw.service.DrawingCommandAppService) appService).getAppService().notifySelectionChanged();
+                }
                 drawingView.repaint();
             }
             appService.setDrawMode(DrawMode.Idle);
         }
-        propertySheet.populateTable(appService);
         drawingView.repaint();
     }
 

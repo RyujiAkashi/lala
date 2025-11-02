@@ -14,12 +14,13 @@ import com.anastacio.property.property.selection.Item;
 import com.anastacio.property.property.selection.SelectionProperty;
 import com.anastacio.drawfx.model.Shape;
 import com.anastacio.drawfx.service.AppService;
+import com.anastacio.drawfx.service.SelectionChangeListener;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class PropertySheet extends PropertyPanel {
+public class PropertySheet extends PropertyPanel implements SelectionChangeListener {
     PropertyPanel propertyTable;
     private SelectionProperty shapeProp;
     Item RectangleItem;
@@ -28,7 +29,16 @@ public class PropertySheet extends PropertyPanel {
     Item TextItem;
     Item ImageItem;
     Item SelectItem;
+    private AppService appService;
+    private PropertyEventListener propertyEventListener;
+    private boolean listenerRegistered = false;
 
+    @Override
+    public void onSelectionChanged(Shape selectedShape) {
+        if (appService != null) {
+            populateTable(appService);
+        }
+    }
 
     public void setShapeProp(ShapeMode shapeMode ){
         SelectionCellComponent  selectionComponent =  propertyTable.getSelectionCellComponent();
@@ -63,9 +73,22 @@ public class PropertySheet extends PropertyPanel {
     }
 
     public void populateTable(AppService appService) {
+        this.appService = appService;
         Drawing drawing = appService.getDrawing();
         propertyTable = this;
-        propertyTable.addEventListener(new PropertyEventListener(appService));
+        
+        if (!listenerRegistered) {
+            com.anastacio.draw.view.DrawingView drawingView = null;
+            if (appService instanceof com.anastacio.draw.service.DrawingAppService) {
+                drawingView = ((com.anastacio.draw.service.DrawingAppService) appService).getDrawingView();
+            } else if (appService instanceof com.anastacio.draw.service.DrawingCommandAppService) {
+                drawingView = ((com.anastacio.draw.service.DrawingCommandAppService) appService).getAppService().getDrawingView();
+            }
+            
+            propertyEventListener = new PropertyEventListener(appService, drawingView);
+            propertyTable.addEventListener(propertyEventListener);
+            listenerRegistered = true;
+        }
 
         propertyTable.clear();
         Shape shape  = appService.getSelectedShape();
@@ -135,52 +158,65 @@ public class PropertySheet extends PropertyPanel {
             selectionComponent.setCellEditorValue(SelectItem);
         }
 
-        ColorProperty foreColorProp = new ColorProperty("Fore color", appService.getColor());
-        propertyTable.addProperty(foreColorProp);
-        
-        IntegerProperty foreAlphaProp = new IntegerProperty("Fore Alpha", shape != null ? shape.getAlpha() : 255);
-        propertyTable.addProperty(foreAlphaProp);
+        if (shape != null) {
+            ColorProperty foreColorProp = new ColorProperty("Fore color", shape.getColor());
+            propertyTable.addProperty(foreColorProp);
+            
+            IntegerProperty foreAlphaProp = new IntegerProperty("Fore Alpha", shape.getAlpha());
+            propertyTable.addProperty(foreAlphaProp);
 
-        ColorProperty fillColorProp = new ColorProperty("Fill color",  appService.getFill());
-        propertyTable.addProperty(fillColorProp);
-        
-        IntegerProperty fillAlphaProp = new IntegerProperty("Fill Alpha", shape != null ? shape.getFillAlpha() : 255);
-        propertyTable.addProperty(fillAlphaProp);
+            ColorProperty fillColorProp = new ColorProperty("Fill color", shape.getFill());
+            propertyTable.addProperty(fillColorProp);
+            
+            IntegerProperty fillAlphaProp = new IntegerProperty("Fill Alpha", shape.getFillAlpha());
+            propertyTable.addProperty(fillAlphaProp);
 
-        BooleanProperty isGradientProp = new BooleanProperty("IsGradient",  appService.isGradient());
-        propertyTable.addProperty(isGradientProp);
+            BooleanProperty isGradientProp = new BooleanProperty("IsGradient", shape.isGradient());
+            propertyTable.addProperty(isGradientProp);
+        } else {
+            ColorProperty foreColorProp = new ColorProperty("Fore color", drawing.getColor());
+            propertyTable.addProperty(foreColorProp);
+            
+            ColorProperty fillColorProp = new ColorProperty("Fill color", drawing.getFill());
+            propertyTable.addProperty(fillColorProp);
+        }
 
-        if (appService.isGradient()) {
-            ColorProperty startColorProp = new ColorProperty("Start color",  appService.getStartColor());
+        if (shape != null && shape.isGradient()) {
+            ColorProperty startColorProp = new ColorProperty("Start color", shape.getStartColor());
             propertyTable.addProperty(startColorProp);
             
-            IntegerProperty startAlphaProp = new IntegerProperty("Start Alpha", shape != null ? shape.getStartAlpha() : 255);
+            IntegerProperty startAlphaProp = new IntegerProperty("Start Alpha", shape.getStartAlpha());
             propertyTable.addProperty(startAlphaProp);
 
-            ColorProperty endColorProp = new ColorProperty("End color",  appService.getEndColor());
+            ColorProperty endColorProp = new ColorProperty("End color", shape.getEndColor());
             propertyTable.addProperty(endColorProp);
             
-            IntegerProperty endAlphaProp = new IntegerProperty("End Alpha", shape != null ? shape.getEndAlpha() : 255);
+            IntegerProperty endAlphaProp = new IntegerProperty("End Alpha", shape.getEndAlpha());
             propertyTable.addProperty(endAlphaProp);
             
-            IntegerProperty startXProp = new IntegerProperty("Start x", appService.getStartX());
+            IntegerProperty startXProp = new IntegerProperty("Start x", shape.getStart().x);
             propertyTable.addProperty(startXProp);
 
-            IntegerProperty startYProp = new IntegerProperty("Start y", appService.getStarty());
+            IntegerProperty startYProp = new IntegerProperty("Start y", shape.getStart().y);
             propertyTable.addProperty(startYProp);
 
-            IntegerProperty endXProp = new IntegerProperty("End x", appService.getEndx());
+            IntegerProperty endXProp = new IntegerProperty("End x", shape.getEnd().x);
             propertyTable.addProperty(endXProp);
 
-            IntegerProperty endYProp = new IntegerProperty("End y", appService.getEndy());
+            IntegerProperty endYProp = new IntegerProperty("End y", shape.getEnd().y);
             propertyTable.addProperty(endYProp);
         }
         
-        BooleanProperty isVisibleProp = new BooleanProperty("IsVisible", appService.isVisible());
-        propertyTable.addProperty(isVisibleProp);
+        if (shape != null) {
+            BooleanProperty isVisibleProp = new BooleanProperty("IsVisible", shape.isVisible());
+            propertyTable.addProperty(isVisibleProp);
 
-        IntegerProperty lineThicknessProp = new IntegerProperty("Line Thickness", appService.getThickness());
-        propertyTable.addProperty(lineThicknessProp);
+            IntegerProperty lineThicknessProp = new IntegerProperty("Line Thickness", shape.getThickness());
+            propertyTable.addProperty(lineThicknessProp);
+        } else {
+            IntegerProperty lineThicknessProp = new IntegerProperty("Line Thickness", drawing.getThickness());
+            propertyTable.addProperty(lineThicknessProp);
+        }
 
         if (shape != null) {
             String currentLineStyle = shape.getLineStyle();
@@ -206,24 +242,24 @@ public class PropertySheet extends PropertyPanel {
         }
 
         if (shape != null) {
-            IntegerProperty xLocationProp = new IntegerProperty("X Location", appService.getXLocation());
+            IntegerProperty xLocationProp = new IntegerProperty("X Location", shape.getLocation().x);
             propertyTable.addProperty(xLocationProp);
 
-            IntegerProperty yLocationProp = new IntegerProperty("Y Location", appService.getYLocation());
+            IntegerProperty yLocationProp = new IntegerProperty("Y Location", shape.getLocation().y);
             propertyTable.addProperty(yLocationProp);
 
-            IntegerProperty widthProp = new IntegerProperty("Width", appService.getWidth());
+            IntegerProperty widthProp = new IntegerProperty("Width", shape.getWidth());
             propertyTable.addProperty(widthProp);
 
-            IntegerProperty heightProp = new IntegerProperty("Height", appService.getHeight());
+            IntegerProperty heightProp = new IntegerProperty("Height", shape.getHeight());
             propertyTable.addProperty(heightProp);
         }
 
         if (shape != null && shape.getShapeMode() == ShapeMode.Text) {
-            StringProperty textProp = new StringProperty("Text", appService.getText() != null ? appService.getText() : "");
+            StringProperty textProp = new StringProperty("Text", shape.getText() != null ? shape.getText() : "");
             propertyTable.addProperty(textProp);
 
-            Font font = appService.getFont();
+            Font font = shape.getFont();
             if(font != null) {
                 StringProperty fontFamilyProp = new StringProperty("Font family", font.getFamily());
                 propertyTable.addProperty(fontFamilyProp);
@@ -271,10 +307,7 @@ public class PropertySheet extends PropertyPanel {
         }
 
         if (shape != null && shape.getShapeMode() == ShapeMode.Image) {
-            String imagePath = appService.getImageFilename();
-            if(imagePath == null) {
-                imagePath = "";
-            }
+            String imagePath = shape.getImageFilename() != null ? shape.getImageFilename() : "";
             StringProperty imageProp = new StringProperty("Image Path", imagePath);
             propertyTable.addProperty(imageProp);
         }

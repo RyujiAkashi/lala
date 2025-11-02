@@ -19,6 +19,10 @@ public class DrawingAppService implements AppService {
 
     @Setter
     DrawingView drawingView;
+    
+    public DrawingView getDrawingView() {
+        return drawingView;
+    }
 
     ImageFileService imageFileService;
     MoverService moverService;
@@ -27,6 +31,19 @@ public class DrawingAppService implements AppService {
     XmlDocumentService xmlDocumentService;
 
     DocumentService documentService;
+    
+    private List<SelectionChangeListener> selectionChangeListeners = new ArrayList<>();
+    
+    public void addSelectionChangeListener(SelectionChangeListener listener) {
+        selectionChangeListeners.add(listener);
+    }
+    
+    public void notifySelectionChanged() {
+        Shape selectedShape = drawing.getSelectedShape();
+        for (SelectionChangeListener listener : selectionChangeListeners) {
+            listener.onSelectionChanged(selectedShape);
+        }
+    }
     public DrawingAppService(){
         drawing = new Drawing();
         moverService = new MoverService();
@@ -168,11 +185,13 @@ public class DrawingAppService implements AppService {
     @Override
     public void search(Point p) {
         searchService.search(this,p);
+        notifySelectionChanged();
     }
 
     @Override
     public void search(Point p, boolean single) {
         searchService.search(this,p, single);
+        notifySelectionChanged();
     }
 
     @Override
@@ -201,6 +220,7 @@ public class DrawingAppService implements AppService {
                 shape.setSelected(false);
             }
         }
+        notifySelectionChanged();
     }
 
     @Override
@@ -211,6 +231,7 @@ public class DrawingAppService implements AppService {
                 shape.setSelected(false);
             }
         }
+        notifySelectionChanged();
     }
 
     @Override
@@ -237,6 +258,7 @@ public class DrawingAppService implements AppService {
         }
         drawing.setSelectedShape(null);
         drawingView.repaint();
+        notifySelectionChanged();
     }
 
     @Override

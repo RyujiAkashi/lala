@@ -5,15 +5,22 @@ import com.anastacio.property.property.Property;
 import com.anastacio.property.property.selection.Item;
 import com.anastacio.drawfx.service.AppService;
 import com.anastacio.drawfx.model.Shape;
+import com.anastacio.draw.view.DrawingView;
 
 import java.awt.Color;
 import java.awt.Font;
 
 public class PropertyEventListener extends PropertyEventAdapter {
     private AppService appService;
+    private DrawingView drawingView;
 
     public PropertyEventListener(AppService appService) {
+        this(appService, null);
+    }
+    
+    public PropertyEventListener(AppService appService, DrawingView drawingView) {
         this.appService = appService;
+        this.drawingView = drawingView;
     }
 
     @Override
@@ -110,6 +117,10 @@ public class PropertyEventListener extends PropertyEventAdapter {
             Item item = (Item) property.getValue();
             String lineStyle = (String) item.getValue();
             appService.setLineStyle(lineStyle);
+        }
+        
+        if (drawingView != null) {
+            drawingView.repaint();
         }
     }
 }

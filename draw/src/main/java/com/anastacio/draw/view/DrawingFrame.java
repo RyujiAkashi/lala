@@ -155,6 +155,12 @@ public class DrawingFrame extends JFrame {
         propertySheet = new PropertySheet(new PropertyOptions.Builder().build());
         propertySheet.addEventListener(new EventListener());
         propertySheet.populateTable(appService);
+        
+        if (appService instanceof com.anastacio.draw.service.DrawingAppService) {
+            ((com.anastacio.draw.service.DrawingAppService) appService).addSelectionChangeListener(propertySheet);
+        } else if (appService instanceof com.anastacio.draw.service.DrawingCommandAppService) {
+            ((com.anastacio.draw.service.DrawingCommandAppService) appService).getAppService().addSelectionChangeListener(propertySheet);
+        }
 
         repaint();
     }
@@ -183,7 +189,6 @@ public class DrawingFrame extends JFrame {
             }
             else if(property.getName().equals("IsGradient")){
                 appService.setIsGradient((Boolean)property.getValue());
-                propertySheet.populateTable(appService);
             }
             else if(property.getName().equals("Start color")){
                 appService.setStartColor((Color)property.getValue());

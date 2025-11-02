@@ -34,6 +34,10 @@ public class DrawingCommandAppService implements AppService {
         };
         return drawingCommandAppService;
     }
+    
+    public DrawingAppService getAppService() {
+        return (DrawingAppService) appService;
+    }
 
     @Override
     public void undo() {

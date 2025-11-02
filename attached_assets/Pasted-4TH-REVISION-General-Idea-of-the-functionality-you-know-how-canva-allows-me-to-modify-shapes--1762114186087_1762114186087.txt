@@ -1,0 +1,107 @@
+4TH REVISION:
+
+General Idea of the functionality:
+you know how canva allows me to modify shapes, texts, or images i add/insert? like scale, move, strectch, edit(my edit is through the property sheet though)? i want you to do something like that too.
+
+Issues to fix and instructions:
+- has these errors:
+[ERROR1]
+Exception in thread "AWT-EventQueue-0" java.lang.ArrayIndexOutOfBoundsException: 12 >= 12
+	at java.base/java.util.Vector.elementAt(Vector.java:466)
+	at java.desktop/javax.swing.table.DefaultTableModel.setValueAt(DefaultTableModel.java:677)
+	at java.desktop/javax.swing.JTable.setValueAt(JTable.java:2793)
+	at java.desktop/javax.swing.JTable.editingStopped(JTable.java:4792)
+	at java.desktop/javax.swing.AbstractCellEditor.fireEditingStopped(AbstractCellEditor.java:152)
+	at java.desktop/javax.swing.AbstractCellEditor.stopCellEditing(AbstractCellEditor.java:96)
+	at java.desktop/javax.swing.plaf.basic.BasicTableUI$Handler.mousePressed(BasicTableUI.java:1040)
+	at java.desktop/java.awt.AWTEventMulticaster.mousePressed(AWTEventMulticaster.java:288)
+[ERROR 2]
+Exception in thread "AWT-EventQueue-0" java.util.ConcurrentModificationException
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1599)
+	at com.anastacio.property.event.EventDispatcher.dispatchUpdateEvent(EventDispatcher.java:24)
+	at com.anastacio.property.cell.BooleanCellComponent.lambda$new$0(BooleanCellComponent.java:20)
+	at java.desktop/javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1972)
+	at java.desktop/javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2314)
+	at java.desktop/javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:407)
+	at java.desktop/javax.swing.JToggleButton$ToggleButtonModel.setPressed(JToggleButton.java:411)
+	at java.desktop/javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:279)
+[ERROR 3]
+Exception in thread "AWT-EventQueue-0" java.lang.IllegalArgumentException: null XORColor
+	at java.desktop/sun.java2d.SunGraphics2D.setXORMode(SunGraphics2D.java:2072)
+	at com.anastacio.drawfx.renderer.ShapeRenderer.render(ShapeRenderer.java:19)
+	at com.anastacio.draw.renderer.EllipseRenderer.render(EllipseRenderer.java:48)
+	at com.anastacio.draw.controller.DrawingController.mouseReleased(DrawingController.java:117)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:297)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6621)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3404)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6386)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:4996)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4828)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4575)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4828)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:775)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:720)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:714)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:98)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:747)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:745)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:744)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+- i can't group/select multiple objects (i have to be able to move them together)
+- the rendering when moving or reshaping should have a ghost like rendering that displays what the object would it look like whenever i let go of mouse pressed when moving
+- i should be only able to select and group objects whenver i'm in select mode. (i shouldn't be able to do it when i'm in any other mode)
+- i still can't select texts properly (what i want is for the surrounding 8 points to be around with the text in the middle. the text is currently above the 8 points and the points are all bunched up together during creation) like i have to select under the text in order to select it.
+- there is no font style in the property sheet when i select a text
+- Undo / Redo (Command Pattern):
+This is a critical requirement. You must implement the Command Pattern for all actions.
+Undoable Actions:
+Create Shape
+Delete Shape
+Update Shape (changing properties like color, size, or gradient)
+Move Shape
+Change Mode (e.g., changing the current tool)
+Implementation: You will need two stacks (e.g., Deque<Command>) for undoStack and redoStack. Each command object must have execute() and unexecute() methods.
+- Make sure these are present (if there are anything i added that isn't listed, leave them alone):
+You need a main toolbar that includes:
+Shape Tools:
+Ellipse
+Rectangle
+Line
+Image (This is a confirmed shape type)
+Text
+Property Controls:
+Color Picker (for fill, line, and text)
+Pin (for placement)
+Line Style (solid, dashed, etc.)
+Line Width
+Font Changer (a dedicated button just for changing font settings)
+- Make sure these are followed (add a transparency in the property sheet):
+Transparency (Alpha): Your color model must support an Alpha channel (transparency from 0-255) in addition to RGB.
+Gradients: The application must support gradient fills. Your shape model must store a start color, end color, and their respective alpha values.
+Color Model: The Alpha property must be saved as part of the shape's data in the Model.
+- Please for the love of everything make undo and redo work:
+Undo / Redo (Command Pattern)
+This is a critical requirement. You must implement the Command Pattern for all actions.
+Undoable Actions:
+Create Shape
+Delete Shape
+Update Shape (changing properties like color, size, or gradient)
+Move Shape
+Change Mode (e.g., changing the current tool)
+Implementation: You will need two stacks (e.g., Deque<Command>) for undoStack and redoStack. Each command object must have execute() and unexecute() methods.
+- PLEASE IDENTIFY ALL ERRORS AND FIX THEM ALL

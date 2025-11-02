@@ -137,9 +137,15 @@ public class PropertySheet extends PropertyPanel {
 
         ColorProperty foreColorProp = new ColorProperty("Fore color", appService.getColor());
         propertyTable.addProperty(foreColorProp);
+        
+        IntegerProperty foreAlphaProp = new IntegerProperty("Fore Alpha", shape != null ? shape.getAlpha() : 255);
+        propertyTable.addProperty(foreAlphaProp);
 
         ColorProperty fillColorProp = new ColorProperty("Fill color",  appService.getFill());
         propertyTable.addProperty(fillColorProp);
+        
+        IntegerProperty fillAlphaProp = new IntegerProperty("Fill Alpha", shape != null ? shape.getFillAlpha() : 255);
+        propertyTable.addProperty(fillAlphaProp);
 
         BooleanProperty isGradientProp = new BooleanProperty("IsGradient",  appService.isGradient());
         propertyTable.addProperty(isGradientProp);
@@ -147,9 +153,15 @@ public class PropertySheet extends PropertyPanel {
         if (appService.isGradient()) {
             ColorProperty startColorProp = new ColorProperty("Start color",  appService.getStartColor());
             propertyTable.addProperty(startColorProp);
+            
+            IntegerProperty startAlphaProp = new IntegerProperty("Start Alpha", shape != null ? shape.getStartAlpha() : 255);
+            propertyTable.addProperty(startAlphaProp);
 
             ColorProperty endColorProp = new ColorProperty("End color",  appService.getEndColor());
             propertyTable.addProperty(endColorProp);
+            
+            IntegerProperty endAlphaProp = new IntegerProperty("End Alpha", shape != null ? shape.getEndAlpha() : 255);
+            propertyTable.addProperty(endAlphaProp);
             
             IntegerProperty startXProp = new IntegerProperty("Start x", appService.getStartX());
             propertyTable.addProperty(startXProp);
@@ -195,6 +207,35 @@ public class PropertySheet extends PropertyPanel {
 
                 IntegerProperty fontSizeProp = new IntegerProperty("Font size", font.getSize());
                 propertyTable.addProperty(fontSizeProp);
+                
+                String fontStyle;
+                int style = font.getStyle();
+                if (style == Font.BOLD) {
+                    fontStyle = "Bold";
+                } else if (style == Font.ITALIC) {
+                    fontStyle = "Italic";
+                } else if (style == (Font.BOLD | Font.ITALIC)) {
+                    fontStyle = "Bold Italic";
+                } else {
+                    fontStyle = "Plain";
+                }
+                
+                ArrayList<Item<Integer>> fontStyles = new ArrayList<>(Arrays.asList(
+                    new Item<Integer>(Font.PLAIN, "Plain"),
+                    new Item<Integer>(Font.BOLD, "Bold"),
+                    new Item<Integer>(Font.ITALIC, "Italic"),
+                    new Item<Integer>(Font.BOLD | Font.ITALIC, "Bold Italic")
+                ));
+                SelectionProperty<Integer> fontStyleProp = new SelectionProperty<Integer>("Font style", fontStyles);
+                propertyTable.addProperty(fontStyleProp);
+                
+                SelectionCellComponent styleComponent = propertyTable.getSelectionCellComponent();
+                for (Item item : fontStyles) {
+                    if (item.getValue().equals(style)) {
+                        styleComponent.setCellEditorValue(item);
+                        break;
+                    }
+                }
             }
         }
         

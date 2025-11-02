@@ -21,10 +21,10 @@ public class EventDispatcher {
     }
 
     public void dispatchUpdateEvent(Property property) {
-        listeners.forEach(l -> l.onPropertyUpdated(property));
+        new ArrayList<>(listeners).forEach(l -> l.onPropertyUpdated(property));
     }
 
     public void dispatchPropertyAddedEvent(Property property) {
-        listeners.forEach(l -> l.onPropertyAdded(property));
+        new ArrayList<>(listeners).forEach(l -> l.onPropertyAdded(property));
     }
 }

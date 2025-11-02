@@ -16,7 +16,12 @@ public class ShapeRenderer implements Renderer {
             int r = 5;
 
             if(xor){
-                 g.setXORMode(shape.getColor());
+                 Color color = shape.getColor();
+                 if (color != null) {
+                     g.setXORMode(color);
+                 } else {
+                     g.setXORMode(Color.WHITE);
+                 }
             }
             else {
                 g.setColor(Color.BLUE);

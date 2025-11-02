@@ -11,10 +11,20 @@ public class PropertyModel extends DefaultTableModel {
     public boolean isCellEditable(int row, int column) {
         return (column == 1);
     }
+    
+    @Override
+    public void setValueAt(Object aValue, int row, int column) {
+        if (row >= 0 && row < getRowCount() && column >= 0 && column < getColumnCount()) {
+            super.setValueAt(aValue, row, column);
+        }
+    }
 
     public void clear() {
-        for (int i = getRowCount() - 1; i >= 0; i--) {
-            removeRow(i);
+        int rowCount = getRowCount();
+        for (int i = rowCount - 1; i >= 0; i--) {
+            if (i < getRowCount()) {
+                removeRow(i);
+            }
         }
     }
 }

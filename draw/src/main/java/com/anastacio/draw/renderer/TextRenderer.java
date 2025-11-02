@@ -5,6 +5,7 @@ import com.anastacio.drawfx.model.Shape;
 import com.anastacio.drawfx.renderer.ShapeRenderer;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 public class TextRenderer extends ShapeRenderer {
 
@@ -18,7 +19,7 @@ public class TextRenderer extends ShapeRenderer {
 
         int x = shape.getLocation().x;
         int y = shape.getLocation().y;
-        int width = shape.getWidth() ;
+        int width = shape.getWidth();
         int height = shape.getHeight();
 
         Graphics2D g2 = (Graphics2D) g;
@@ -27,14 +28,30 @@ public class TextRenderer extends ShapeRenderer {
         if (xor) {
             if(shape.getColor() != null) {
                 g2.setXORMode(shape.getColor());
+            } else {
+                g2.setXORMode(Color.WHITE);
             }
             g2.drawRect(x, y, width, height);
         } else {
             if(shape.getColor() != null) {
                 g2.setColor(shape.getColor());
             }
-            g2.setFont(shape.getFont());
-            g2.drawString(shape.getText(), shape.getLocation().x, shape.getLocation().y);
+            
+            Font font = shape.getFont();
+            if (font != null) {
+                g2.setFont(font);
+            }
+            
+            String textStr = shape.getText();
+            if (textStr != null && !textStr.isEmpty()) {
+                FontMetrics fm = g2.getFontMetrics();
+                Rectangle2D rect = fm.getStringBounds(textStr, g2);
+                
+                int textX = x + (width - (int)rect.getWidth()) / 2;
+                int textY = y + ((height - (int)rect.getHeight()) / 2) + fm.getAscent();
+                
+                g2.drawString(textStr, textX, textY);
+            }
         }
         super.render(g, shape, xor);
     }

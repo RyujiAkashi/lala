@@ -24,10 +24,15 @@ public abstract class Shape {
     String text;
     Font font;
     String imageFilename;
+    
+    private int alpha = 255;
+    private int fillAlpha = 255;
 
     private Color startColor = Color.WHITE;
     private Color endColor = Color.RED;
     boolean isGradient = false;
+    private int startAlpha = 255;
+    private int endAlpha = 255;
     Point start;
     Point end;
 

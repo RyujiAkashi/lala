@@ -35,7 +35,7 @@ public class DrawingAppService implements AppService {
         xmlDocumentService = new XmlDocumentService(drawing);
         imageFileService = new ImageFileService();
         drawing.setDrawMode(DrawMode.Idle);
-        drawing.setShapeMode(ShapeMode.Ellipse);
+        drawing.setShapeMode(ShapeMode.Select);
     }
 
     @Override

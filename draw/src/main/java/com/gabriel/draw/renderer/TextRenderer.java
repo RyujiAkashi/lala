@@ -25,12 +25,14 @@ public class TextRenderer extends ShapeRenderer {
         g2.setStroke(new BasicStroke(shape.getThickness()));
 
         if (xor) {
-            g2.setXORMode(shape.getColor());
+            if(shape.getColor() != null) {
+                g2.setXORMode(shape.getColor());
+            }
             g2.drawRect(x, y, width, height);
         } else {
-//            g2.setColor(shape.getColor());
-            GradientPaint gp = new GradientPaint(x, x, shape.getFill(), x+width, y+height, Color.BLACK);
-            g2.setPaint(gp);
+            if(shape.getColor() != null) {
+                g2.setColor(shape.getColor());
+            }
             g2.setFont(shape.getFont());
             g2.drawString(shape.getText(), shape.getLocation().x, shape.getLocation().y);
         }

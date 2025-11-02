@@ -23,10 +23,14 @@ public class LineRenderer extends ShapeRenderer {
         g2.setStroke(new BasicStroke(shape.getThickness()));
 
         if(xor) {
-            g2.setXORMode(shape.getColor());
+            if(shape.getColor() != null) {
+                g2.setXORMode(shape.getColor());
+            }
         }
         else {
-            g2.setColor(shape.getColor());
+            if(shape.getColor() != null) {
+                g2.setColor(shape.getColor());
+            }
             g2.drawLine(x,y,x+width, y+height);
             super.render(g, shape, xor);
         }

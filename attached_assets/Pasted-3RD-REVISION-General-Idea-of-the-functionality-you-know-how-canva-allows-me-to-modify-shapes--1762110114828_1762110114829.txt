@@ -1,0 +1,71 @@
+3RD REVISION:
+
+General Idea of the functionality:
+you know how canva allows me to modify shapes, texts, or images i add/insert? like scale, move, strectch, edit(my edit is through the property sheet though)? i want you to do something like that too.
+- the rendering 
+- reshaping
+
+Issues and instructions:
+- Property sheet should have the following (if it's used or if it's applicable to the current selected object):
+Object type - what is selected (not modifiable, automatically detects the object)
+current shape - what shape is selected (not modifiable, automatically detects the shape)
+fore color - color of the line
+fill color - color of the fill
+start color - of the gradient
+end color - of the gradient
+start x - of the gradient
+start y - of the gradient
+end x - of the gradient
+end y - of the gradient
+is gradient (checkbox) -  turns the fill into gradient
+is visible (checkbox) - should be checked by default, if you uncheck, the object should disappear
+line thickness - edits the thickness
+Line Style - (solid, dashed, etc.)
+x location - x location of the shape
+y location - y location of the shape
+width - of the shape
+height - of the shape
+boolean - idk what this does
+float - idk what this does either
+text - what's the text 
+image - file location of the image
+font family - font
+font style - bold, italic, underline, plain
+font size - size of font
+
+
+- i can't group objects anymore (i should be able to)
+- some values in the property sheet aren't updating when changed (please check them all)
+
+- undo and redo still doesn't work for all of them:
+Undoable Actions:
+Create Shape
+Delete Shape
+Update Shape (changing properties like color, size, or gradient)
+Move Shape
+Change Mode (e.g., changing the current tool)
+Implementation: You will need two stacks (e.g., Deque<Command>) for undoStack and redoStack. Each command object must have execute() and unexecute() methods.
+
+- i should be able to add text in shapes when i edit them using the property sheet
+- i can't select the text when i add them (i should be able to. i should also be able to change its properties using the property sheet)
+- panels that popup like setcolor should pop up in the middle (currently popping up somewhere lower left)
+
+- the setcolor and setfill has errors (i can't do anything after pressing them):
+Exception in thread "AWT-EventQueue-0" java.lang.IllegalArgumentException: null XORColor
+	at java.desktop/sun.java2d.SunGraphics2D.setXORMode(SunGraphics2D.java:2072)
+	at com.gabriel.draw.renderer.RectangleRenderer.render(RectangleRenderer.java:22)
+	at com.gabriel.draw.controller.DrawingController.mouseReleased(DrawingController.java:127)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:297)
+
+- the default mode should select mode whenver i first start the application
+
+Input Validation: For numeric fields in the property sheet (like Line Width), you must validate the input. If a user types a non-integer (e.g., "S"), the text field's background should change color (e.g., to red) and the invalid value must be rejected.
+Deletion Strategy: You need to support both:
+Physical Delete: Removing the shape from the list.
+Logical Delete (Marking): Flagging a shape as isDeleted = true but keeping it in the list (this is useful for the Undo command).
+Save on Exit: The application must prompt the user to save any unsaved changes before it is allowed to close.
+Suggested Enhancement (Status Bar): It is recommended you add a Status Bar at the bottom of the window that shows the live X and Y coordinates of the mouse cursor.
+
+
+
+

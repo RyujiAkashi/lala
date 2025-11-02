@@ -48,16 +48,19 @@ public class ActionController implements ActionListener {
             appService.setShapeMode(ShapeMode.Rectangle);
         } else if (ActionCommand.ELLIPSE.equals(cmd)) {
             appService.setShapeMode(ShapeMode.Ellipse);
-        } else if (ActionCommand.IMAGE.equals(cmd)) { // third button
+        } else if (ActionCommand.IMAGE.equals(cmd)) {
             if(drawing.getImageFilename() == null) {
                 imageFileService.setImage(drawing);
             }
             appService.setShapeMode(ShapeMode.Image);
-        } else if (ActionCommand.IMAGEFILE.equals(cmd)) { // third button
+        } else if (ActionCommand.IMAGEFILE.equals(cmd)) {
             imageFileService.setImage(drawing);
         } else if (ActionCommand.COLOR.equals(cmd)) {
-            Color color = JColorChooser.showDialog(component, "Select color", appService.getColor());
-            appService.setColor(color);
+            Color color = JColorChooser.showDialog(frame, "Select color", appService.getColor());
+            if(color != null) {
+                appService.setColor(color);
+                component.repaint();
+            }
         } else if (ActionCommand.FONT.equals(cmd)) {
             getFont();
         } else if (ActionCommand.TEXT.equals(cmd)) {
@@ -66,9 +69,12 @@ public class ActionController implements ActionListener {
             }
             appService.setShapeMode(ShapeMode.Text);
         } else if (ActionCommand.FILL.equals(cmd)) {
-            Color color = JColorChooser.showDialog(component, "Select color", appService.getColor());
-            Color newColor = new Color(color.getRed(),color.getGreen(), color.getBlue(), color.getAlpha() );
-            appService.setFill(newColor );
+            Color color = JColorChooser.showDialog(frame, "Select fill color", appService.getFill());
+            if(color != null) {
+                Color newColor = new Color(color.getRed(),color.getGreen(), color.getBlue(), color.getAlpha() );
+                appService.setFill(newColor );
+                component.repaint();
+            }
         } else if (ActionCommand.SAVEAS.equals(cmd)) {
             FileDialog fDialog = new FileDialog(frame, "Save", FileDialog.SAVE);
             fDialog.setFile(drawing.getFilename());
@@ -95,9 +101,8 @@ public class ActionController implements ActionListener {
                     }
                 }
             });
-            int result = fileChooser.showOpenDialog(null);
-            if (result == JFileChooser.OPEN_DIALOG) {
-                // set the label to the path of the selected file
+            int result = fileChooser.showOpenDialog(frame);
+            if (result == JFileChooser.APPROVE_OPTION) {
                 String filename = fileChooser.getSelectedFile().getAbsolutePath();
                 drawing.setFilename(filename);
                 XmlDocumentService docService = new XmlDocumentService(drawing);
@@ -109,7 +114,7 @@ public class ActionController implements ActionListener {
         } else if (ActionCommand.NEW.equals(cmd)) {
             if (!drawing.getShapes().isEmpty()) {
                 int result = JOptionPane.showConfirmDialog(
-                        null,
+                        frame,
                         "Do you want to continue and discard your changes?",
                         "Confirmation",
                         JOptionPane.YES_NO_OPTION
@@ -136,9 +141,8 @@ public class ActionController implements ActionListener {
                         }
                     }
                 });
-                int result = fileChooser.showSaveDialog(null);
+                int result = fileChooser.showSaveDialog(frame);
                 if (result == JFileChooser.APPROVE_OPTION) {
-                    // set the label to the path of the selected file
                     filename = fileChooser.getSelectedFile().getAbsolutePath();
                     drawing.setFilename(filename);
                     frame.setTitle(filename);
@@ -149,16 +153,15 @@ public class ActionController implements ActionListener {
         } else if (ActionCommand.DELETE.equals(cmd)) {
             appService.delete();
             component.repaint();
-
-            // TODO Insert the handler for the File menuitems.
-
         }
     }
+    
     void getFont() {
         FontDialog dialog = new FontDialog((Frame) null, "Font Dialog Example", true);
         dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         dialog.setFont(drawing.getFont());
         dialog.setPreviewText(drawing.getText());
+        dialog.setLocationRelativeTo(frame);
         dialog.setVisible(true);
         if (!dialog.isCancelSelected()) {
             Font font = dialog.getSelectedFont();

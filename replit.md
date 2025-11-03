@@ -24,7 +24,27 @@ The application is configured to run automatically through the "GoDraw Applicati
 Command: `mvn -pl draw exec:java`
 
 ## Recent Changes
-- **2025-11-02 (Latest Session)**: Critical bug fixes and feature completions
+- **2025-11-03 (Latest Session)**: Property Sheet Dynamic Updates and Group Editing Enhancements
+  - **Dynamic Property Sheet Refresh:**
+    - Property sheet now automatically refreshes when isGradient is toggled
+    - Gradient-specific fields (Start Color, End Color, Start/End Alpha, Start/End X/Y) now dynamically appear/disappear based on isGradient value
+    - Property sheet reference passed to PropertyEventListener for triggering refresh on property changes
+  - **Full Group Editing Support for All Properties:**
+    - Fixed X/Y location setters to work on all selected shapes (was only working on single shape)
+    - Fixed gradient coordinate setters (Start X/Y, End X/Y) to support multiple selected shapes with undo/redo
+    - All property changes now properly apply to entire selection group
+  - **Pinned Property Implementation:**
+    - Added isPinned and setIsPinned methods to AppService interface and all implementations
+    - Pinned property now supports group editing with full undo/redo functionality
+    - Users can lock/unlock multiple shapes simultaneously via property sheet
+  - **Code Review Findings:**
+    - Architect confirmed all changes follow existing Command Pattern correctly
+    - No breaking changes or regressions introduced
+    - Undo/redo semantics preserved across all group operations
+    - Line style and width already correctly apply to Drawing defaults when no shape selected
+  - Application successfully built and running with all fixes implemented
+
+- **2025-11-02**: Critical bug fixes and feature completions
   - **SetPropertyCommand Reflection Fix:**
     - Fixed SetPropertyCommand to properly iterate through multiple parameter types (Color, Font, Point, String, boolean, int)
     - Color objects are now correctly set via reflection instead of being converted to strings

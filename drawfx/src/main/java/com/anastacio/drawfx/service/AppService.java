@@ -86,6 +86,8 @@ public interface AppService {
     void setIsGradient(boolean yes);
     boolean isVisible();
     void setIsVisible(boolean yes);
+    boolean isPinned();
+    void setIsPinned(boolean yes);
     void delete();
 
     void setStartX(int startx);

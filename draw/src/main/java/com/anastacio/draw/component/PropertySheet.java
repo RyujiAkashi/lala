@@ -85,7 +85,7 @@ public class PropertySheet extends PropertyPanel implements SelectionChangeListe
                 drawingView = ((com.anastacio.draw.service.DrawingCommandAppService) appService).getAppService().getDrawingView();
             }
             
-            propertyEventListener = new PropertyEventListener(appService, drawingView);
+            propertyEventListener = new PropertyEventListener(appService, drawingView, this);
             propertyTable.addEventListener(propertyEventListener);
             listenerRegistered = true;
         }

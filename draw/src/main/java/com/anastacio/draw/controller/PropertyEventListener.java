@@ -6,6 +6,7 @@ import com.anastacio.property.property.selection.Item;
 import com.anastacio.drawfx.service.AppService;
 import com.anastacio.drawfx.model.Shape;
 import com.anastacio.draw.view.DrawingView;
+import com.anastacio.draw.component.PropertySheet;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -13,14 +14,20 @@ import java.awt.Font;
 public class PropertyEventListener extends PropertyEventAdapter {
     private AppService appService;
     private DrawingView drawingView;
+    private PropertySheet propertySheet;
 
     public PropertyEventListener(AppService appService) {
-        this(appService, null);
+        this(appService, null, null);
     }
     
     public PropertyEventListener(AppService appService, DrawingView drawingView) {
+        this(appService, drawingView, null);
+    }
+    
+    public PropertyEventListener(AppService appService, DrawingView drawingView, PropertySheet propertySheet) {
         this.appService = appService;
         this.drawingView = drawingView;
+        this.propertySheet = propertySheet;
     }
 
     @Override
@@ -47,6 +54,9 @@ public class PropertyEventListener extends PropertyEventAdapter {
             appService.setEndColor((Color) property.getValue());
         } else if (property.getName().equals("IsGradient")) {
             appService.setIsGradient((Boolean) property.getValue());
+            if (propertySheet != null) {
+                propertySheet.populateTable(appService);
+            }
         } else if (property.getName().equals("IsVisible")) {
             appService.setIsVisible((Boolean) property.getValue());
         } else if (property.getName().equals("Start x")) {
@@ -117,6 +127,8 @@ public class PropertyEventListener extends PropertyEventAdapter {
             Item item = (Item) property.getValue();
             String lineStyle = (String) item.getValue();
             appService.setLineStyle(lineStyle);
+        } else if (property.getName().equals("Pinned")) {
+            appService.setIsPinned((Boolean) property.getValue());
         }
         
         if (drawingView != null) {

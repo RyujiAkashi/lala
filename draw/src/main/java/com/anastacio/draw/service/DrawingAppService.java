@@ -525,6 +525,24 @@ public class DrawingAppService implements AppService {
         }
     }
 
+    @Override
+    public boolean isPinned() {
+        Shape selectedShape = drawing.getSelectedShape();
+        if (selectedShape == null) {
+            return false;
+        } else {
+            return selectedShape.isPinned();
+        }
+    }
+    
+    @Override
+    public void setIsPinned(boolean yes) {
+        Shape selectedShape = drawing.getSelectedShape();
+        if (selectedShape != null) {
+            selectedShape.setPinned(yes);
+        }
+    }
+
     public void delete() {
         List<Shape> shapes = drawing.getShapes();
         List<Shape> shapesToDelete = new ArrayList<>();

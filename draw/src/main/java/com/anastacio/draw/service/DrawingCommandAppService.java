@@ -263,12 +263,14 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setXLocation(int xLocation) {
-        Shape selectedShape = appService.getSelectedShape();
-        if (selectedShape != null) {
-            Point newLocation = new Point(xLocation, selectedShape.getLocation().y);
-            Command command = new com.anastacio.draw.command.SetPropertyCommand(
-                selectedShape, "location", "setLocation", "getLocation", newLocation);
-            CommandService.ExecuteCommand(command);
+        List<Shape> selectedShapes = appService.getSelectedShapes();
+        if (selectedShapes != null && !selectedShapes.isEmpty()) {
+            for (Shape shape : selectedShapes) {
+                Point newLocation = new Point(xLocation, shape.getLocation().y);
+                Command command = new com.anastacio.draw.command.SetPropertyCommand(
+                    shape, "location", "setLocation", "getLocation", newLocation);
+                CommandService.ExecuteCommand(command);
+            }
         } else {
             appService.setXLocation(xLocation);
         }
@@ -281,12 +283,14 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setYLocation(int yLocation) {
-        Shape selectedShape = appService.getSelectedShape();
-        if (selectedShape != null) {
-            Point newLocation = new Point(selectedShape.getLocation().x, yLocation);
-            Command command = new com.anastacio.draw.command.SetPropertyCommand(
-                selectedShape, "location", "setLocation", "getLocation", newLocation);
-            CommandService.ExecuteCommand(command);
+        List<Shape> selectedShapes = appService.getSelectedShapes();
+        if (selectedShapes != null && !selectedShapes.isEmpty()) {
+            for (Shape shape : selectedShapes) {
+                Point newLocation = new Point(shape.getLocation().x, yLocation);
+                Command command = new com.anastacio.draw.command.SetPropertyCommand(
+                    shape, "location", "setLocation", "getLocation", newLocation);
+                CommandService.ExecuteCommand(command);
+            }
         } else {
             appService.setYLocation(yLocation);
         }
@@ -463,7 +467,17 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setStartX(int startx) {
-        appService.setStartX(startx);
+        List<Shape> selectedShapes = appService.getSelectedShapes();
+        if (selectedShapes != null && !selectedShapes.isEmpty()) {
+            for (Shape shape : selectedShapes) {
+                Point newStart = new Point(startx, shape.getStart().y);
+                Command command = new com.anastacio.draw.command.SetPropertyCommand(
+                    shape, "start", "setStart", "getStart", newStart);
+                CommandService.ExecuteCommand(command);
+            }
+        } else {
+            appService.setStartX(startx);
+        }
     }
 
     @Override
@@ -473,7 +487,17 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setStarty(int starty) {
-        appService.setStarty(starty);
+        List<Shape> selectedShapes = appService.getSelectedShapes();
+        if (selectedShapes != null && !selectedShapes.isEmpty()) {
+            for (Shape shape : selectedShapes) {
+                Point newStart = new Point(shape.getStart().x, starty);
+                Command command = new com.anastacio.draw.command.SetPropertyCommand(
+                    shape, "start", "setStart", "getStart", newStart);
+                CommandService.ExecuteCommand(command);
+            }
+        } else {
+            appService.setStarty(starty);
+        }
     }
 
     @Override
@@ -483,7 +507,17 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setEndx(int endx) {
-        appService.setEndx(endx);
+        List<Shape> selectedShapes = appService.getSelectedShapes();
+        if (selectedShapes != null && !selectedShapes.isEmpty()) {
+            for (Shape shape : selectedShapes) {
+                Point newEnd = new Point(endx, shape.getEnd().y);
+                Command command = new com.anastacio.draw.command.SetPropertyCommand(
+                    shape, "end", "setEnd", "getEnd", newEnd);
+                CommandService.ExecuteCommand(command);
+            }
+        } else {
+            appService.setEndx(endx);
+        }
     }
 
     @Override
@@ -493,7 +527,17 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setEndy(int endy) {
-        appService.setEndy(endy);
+        List<Shape> selectedShapes = appService.getSelectedShapes();
+        if (selectedShapes != null && !selectedShapes.isEmpty()) {
+            for (Shape shape : selectedShapes) {
+                Point newEnd = new Point(shape.getEnd().x, endy);
+                Command command = new com.anastacio.draw.command.SetPropertyCommand(
+                    shape, "end", "setEnd", "getEnd", newEnd);
+                CommandService.ExecuteCommand(command);
+            }
+        } else {
+            appService.setEndy(endy);
+        }
     }
 
     @Override
@@ -520,6 +564,23 @@ public class DrawingCommandAppService implements AppService {
             CommandService.ExecuteCommand(command);
         } else {
             appService.setFont(font);
+        }
+    }
+
+    @Override
+    public boolean isPinned() {
+        return appService.isPinned();
+    }
+    
+    @Override
+    public void setIsPinned(boolean yes) {
+        List<Shape> selectedShapes = appService.getSelectedShapes();
+        if (selectedShapes != null && !selectedShapes.isEmpty()) {
+            for (Shape shape : selectedShapes) {
+                Command command = new com.anastacio.draw.command.SetPropertyCommand(
+                    shape, "pinned", "setPinned", "isPinned", yes);
+                CommandService.ExecuteCommand(command);
+            }
         }
     }
 }

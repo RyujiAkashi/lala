@@ -232,9 +232,8 @@ public class DrawingCommandAppService implements AppService {
                     shape, "thickness", "setThickness", "getThickness", thickness);
                 CommandService.ExecuteCommand(command);
             }
-        } else {
-            appService.setThickness(thickness);
         }
+        appService.setThickness(thickness);
     }
 
     @Override
@@ -251,9 +250,8 @@ public class DrawingCommandAppService implements AppService {
                     shape, "lineStyle", "setLineStyle", "getLineStyle", lineStyle);
                 CommandService.ExecuteCommand(command);
             }
-        } else {
-            appService.setLineStyle(lineStyle);
         }
+        appService.setLineStyle(lineStyle);
     }
 
     @Override

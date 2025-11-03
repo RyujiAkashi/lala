@@ -127,6 +127,9 @@ public class PropertyEventListener extends PropertyEventAdapter {
             Item item = (Item) property.getValue();
             String lineStyle = (String) item.getValue();
             appService.setLineStyle(lineStyle);
+            if (propertySheet != null) {
+                propertySheet.populateTable(appService);
+            }
         } else if (property.getName().equals("Pinned")) {
             appService.setIsPinned((Boolean) property.getValue());
         }

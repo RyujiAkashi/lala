@@ -40,9 +40,10 @@ public class ActionController implements ActionListener {
         String cmd = e.getActionCommand();
         if (ActionCommand.UNDO.equals(cmd)) {
             appService.undo();
-        }
-        if (ActionCommand.REDO.equals(cmd)) {
+            component.repaint();
+        } else if (ActionCommand.REDO.equals(cmd)) {
             appService.redo();
+            component.repaint();
         } else if (ActionCommand.LINE.equals(cmd)) {
             appService.setShapeMode(ShapeMode.Line);
         } else if (ActionCommand.RECT.equals(cmd)) {

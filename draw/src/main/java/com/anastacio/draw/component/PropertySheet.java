@@ -32,6 +32,7 @@ public class PropertySheet extends PropertyPanel implements SelectionChangeListe
     private AppService appService;
     private PropertyEventListener propertyEventListener;
     private boolean listenerRegistered = false;
+    private boolean isPopulating = false;
 
     @Override
     public void onSelectionChanged(Shape selectedShape) {
@@ -73,9 +74,15 @@ public class PropertySheet extends PropertyPanel implements SelectionChangeListe
     }
 
     public void populateTable(AppService appService) {
-        this.appService = appService;
-        Drawing drawing = appService.getDrawing();
-        propertyTable = this;
+        if (isPopulating) {
+            return;
+        }
+        isPopulating = true;
+        
+        try {
+            this.appService = appService;
+            Drawing drawing = appService.getDrawing();
+            propertyTable = this;
         
         if (!listenerRegistered) {
             com.anastacio.draw.view.DrawingView drawingView = null;
@@ -310,6 +317,9 @@ public class PropertySheet extends PropertyPanel implements SelectionChangeListe
             String imagePath = shape.getImageFilename() != null ? shape.getImageFilename() : "";
             StringProperty imageProp = new StringProperty("Image Path", imagePath);
             propertyTable.addProperty(imageProp);
+        }
+        } finally {
+            isPopulating = false;
         }
     }
 }

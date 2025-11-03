@@ -24,7 +24,21 @@ The application is configured to run automatically through the "GoDraw Applicati
 Command: `mvn -pl draw exec:java`
 
 ## Recent Changes
-- **2025-11-03 (Latest Session)**: Property Sheet Dynamic Updates and Group Editing Enhancements
+- **2025-11-03 (Current Session)**: Critical UI Bug Fixes
+  - **Undo/Redo Visual Feedback Fix:**
+    - Fixed undo/redo buttons to properly repaint the view after executing undo/redo operations
+    - Users can now see visual changes immediately when clicking undo/redo
+    - Added component.repaint() calls after appService.undo() and appService.redo() in ActionController
+  - **Line Style Property Sheet Bug Fix:**
+    - Fixed property sheet to refresh when line style is changed from property panel
+    - Properties no longer disappear when using non-solid line styles (dashed, dotted, dash-dot)
+    - Added propertySheet.populateTable() after line style changes, matching the IsGradient refresh pattern
+  - **Code Review:**
+    - Architect confirmed fixes follow existing patterns without introducing regressions
+    - All changes mirror established behavior in ActionController and PropertyEventListener
+  - Application rebuilt and running successfully with all interactive features working
+
+- **2025-11-03 (Previous Session)**: Property Sheet Dynamic Updates and Group Editing Enhancements
   - **Dynamic Property Sheet Refresh:**
     - Property sheet now automatically refreshes when isGradient is toggled
     - Gradient-specific fields (Start Color, End Color, Start/End Alpha, Start/End X/Y) now dynamically appear/disappear based on isGradient value

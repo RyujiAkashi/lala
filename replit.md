@@ -37,11 +37,15 @@ Command: `mvn -pl draw exec:java`
     - Added isPinned and setIsPinned methods to AppService interface and all implementations
     - Pinned property now supports group editing with full undo/redo functionality
     - Users can lock/unlock multiple shapes simultaneously via property sheet
+  - **Line Style and Width Persistence Fix:**
+    - Fixed setThickness() and setLineStyle() to ALWAYS update Drawing defaults, regardless of selection state
+    - When changing line width or style with shapes selected, changes now apply to both selected shapes AND defaults for new shapes
+    - New shapes drawn after changing line style/width now correctly inherit the updated settings
+    - Previously only updated defaults when no shapes were selected, causing new shapes to use stale values
   - **Code Review Findings:**
     - Architect confirmed all changes follow existing Command Pattern correctly
     - No breaking changes or regressions introduced
-    - Undo/redo semantics preserved across all group operations
-    - Line style and width already correctly apply to Drawing defaults when no shape selected
+    - Undo/redo semantics preserved across all group operations and default updates
   - Application successfully built and running with all fixes implemented
 
 - **2025-11-02**: Critical bug fixes and feature completions

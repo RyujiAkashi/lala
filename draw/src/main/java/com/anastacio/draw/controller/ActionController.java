@@ -1,4 +1,5 @@
 package com.anastacio.draw.controller;
+
 import com.anastacio.draw.service.ImageFileService;
 import com.anastacio.draw.service.XmlDocumentService;
 import com.anastacio.drawfx.ActionCommand;
@@ -28,11 +29,11 @@ public class ActionController implements ActionListener {
     @Setter
     JFrame frame;
 
-    public  ActionController(AppService appService){
+    public ActionController(AppService appService) {
         this.appService = appService;
         drawing = appService.getDrawing();
         imageFileService = new ImageFileService();
-   }
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -49,7 +50,7 @@ public class ActionController implements ActionListener {
         } else if (ActionCommand.ELLIPSE.equals(cmd)) {
             appService.setShapeMode(ShapeMode.Ellipse);
         } else if (ActionCommand.IMAGE.equals(cmd)) {
-            if(drawing.getImageFilename() == null) {
+            if (drawing.getImageFilename() == null) {
                 imageFileService.setImage(drawing);
             }
             appService.setShapeMode(ShapeMode.Image);
@@ -57,22 +58,22 @@ public class ActionController implements ActionListener {
             imageFileService.setImage(drawing);
         } else if (ActionCommand.COLOR.equals(cmd)) {
             Color color = JColorChooser.showDialog(frame, "Select color", appService.getColor());
-            if(color != null) {
+            if (color != null) {
                 appService.setColor(color);
                 component.repaint();
             }
         } else if (ActionCommand.FONT.equals(cmd)) {
             getFont();
         } else if (ActionCommand.TEXT.equals(cmd)) {
-            if(drawing.getFont() == null) {
+            if (drawing.getFont() == null) {
                 getFont();
             }
             appService.setShapeMode(ShapeMode.Text);
         } else if (ActionCommand.FILL.equals(cmd)) {
             Color color = JColorChooser.showDialog(frame, "Select fill color", appService.getFill());
-            if(color != null) {
-                Color newColor = new Color(color.getRed(),color.getGreen(), color.getBlue(), color.getAlpha() );
-                appService.setFill(newColor );
+            if (color != null) {
+                Color newColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
+                appService.setFill(newColor);
                 component.repaint();
             }
         } else if (ActionCommand.SAVEAS.equals(cmd)) {
@@ -108,7 +109,6 @@ public class ActionController implements ActionListener {
                 XmlDocumentService docService = new XmlDocumentService(drawing);
                 docService.open();
                 frame.setTitle(filename);
-
             }
             component.repaint();
         } else if (ActionCommand.NEW.equals(cmd)) {
@@ -185,13 +185,13 @@ public class ActionController implements ActionListener {
                 currentStyle = drawing.getSelectedShape().getLineStyle();
             }
             String selectedStyle = (String) JOptionPane.showInputDialog(
-                frame,
-                "Select line style:",
-                "Line Style",
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                styles,
-                currentStyle
+                    frame,
+                    "Select line style:",
+                    "Line Style",
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    styles,
+                    currentStyle
             );
             if (selectedStyle != null) {
                 if (drawing.getSelectedShape() != null) {
@@ -200,6 +200,9 @@ public class ActionController implements ActionListener {
                             shape.setLineStyle(selectedStyle);
                         }
                     }
+                } else {
+                    //  Update default line style when no shape is selected
+                    drawing.setLineStyle(selectedStyle);
                 }
                 component.repaint();
             }
@@ -209,9 +212,9 @@ public class ActionController implements ActionListener {
                 currentWidth = drawing.getSelectedShape().getThickness();
             }
             String input = JOptionPane.showInputDialog(
-                frame,
-                "Enter line width (1-20):",
-                String.valueOf(currentWidth)
+                    frame,
+                    "Enter line width (1-20):",
+                    String.valueOf(currentWidth)
             );
             if (input != null) {
                 try {
@@ -223,6 +226,9 @@ public class ActionController implements ActionListener {
                                     shape.setThickness(width);
                                 }
                             }
+                        } else {
+                            // FIX: Update default thickness when no shape is selected
+                            drawing.setThickness(width);
                         }
                         component.repaint();
                     } else {
@@ -234,7 +240,7 @@ public class ActionController implements ActionListener {
             }
         }
     }
-    
+
     void getFont() {
         FontDialog dialog = new FontDialog((Frame) null, "Font Dialog Example", true);
         dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -250,5 +256,4 @@ public class ActionController implements ActionListener {
         }
         dialog.setVisible(false);
     }
-
 }

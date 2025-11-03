@@ -103,4 +103,6 @@ public interface AppService {
     String getText();
     Font getFont();
     void setFont(Font font);
+
 }
+

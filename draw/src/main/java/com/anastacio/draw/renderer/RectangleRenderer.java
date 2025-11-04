@@ -19,6 +19,7 @@ public class RectangleRenderer extends ShapeRenderer {
         int height = shape.getHeight();
 
         Graphics2D g2 = (Graphics2D) g;
+        Stroke originalStroke = g2.getStroke();
         g2.setStroke(getStroke(shape));
 
         if (xor) {
@@ -43,6 +44,7 @@ public class RectangleRenderer extends ShapeRenderer {
             }
         }
         g2.drawRect(x, y, width, height);
+        g2.setStroke(originalStroke);
         super.render(g, shape, xor);
 
     }

@@ -179,34 +179,7 @@ public class ActionController implements ActionListener {
             } else {
                 JOptionPane.showMessageDialog(frame, "No shapes selected", "Pin Error", JOptionPane.WARNING_MESSAGE);
             }
-        } else if (ActionCommand.LINE_STYLE.equals(cmd)) {
-            String[] styles = {"Solid", "Dashed", "Dotted", "Dash-Dot"};
-            String currentStyle = "Solid";
-            if (drawing.getSelectedShape() != null) {
-                currentStyle = drawing.getSelectedShape().getLineStyle();
-            }
-            String selectedStyle = (String) JOptionPane.showInputDialog(
-                    frame,
-                    "Select line style:",
-                    "Line Style",
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    styles,
-                    currentStyle
-            );
-            if (selectedStyle != null) {
-                if (drawing.getSelectedShape() != null) {
-                    for (com.anastacio.drawfx.model.Shape shape : drawing.getShapes()) {
-                        if (shape.isSelected()) {
-                            shape.setLineStyle(selectedStyle);
-                        }
-                    }
-                } else {
-                    //  Update default line style when no shape is selected
-                    drawing.setLineStyle(selectedStyle);
-                }
-                component.repaint();
-            }
+
         } else if (ActionCommand.LINE_WIDTH.equals(cmd)) {
             int currentWidth = 1;
             if (drawing.getSelectedShape() != null) {

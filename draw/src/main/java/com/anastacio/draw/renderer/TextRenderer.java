@@ -23,6 +23,7 @@ public class TextRenderer extends ShapeRenderer {
         int height = shape.getHeight();
 
         Graphics2D g2 = (Graphics2D) g;
+        Stroke originalStroke = g2.getStroke();
         g2.setStroke(new BasicStroke(shape.getThickness()));
 
         if (xor) {
@@ -32,6 +33,7 @@ public class TextRenderer extends ShapeRenderer {
                 g2.setXORMode(Color.WHITE);
             }
             g2.drawRect(x, y, width, height);
+            g2.setStroke(originalStroke);
         } else {
             if (shape.isGradient() && shape.getStartColor() != null && shape.getEndColor() != null && shape.getStart() != null && shape.getEnd() != null) {
                 int startX = shape.getLocation().x + shape.getStart().x;
@@ -63,6 +65,7 @@ public class TextRenderer extends ShapeRenderer {
                 
                 g2.drawString(textStr, textX, textY);
             }
+            g2.setStroke(originalStroke);
         }
         super.render(g, shape, xor);
     }

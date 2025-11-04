@@ -92,21 +92,18 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
                         currentShape = new Line(start);
                         currentShape.setColor(appService.getColor());
                         currentShape.setThickness(appService.getThickness());
-                        currentShape.setLineStyle(drawing.getLineStyle());
                         currentShape.getRendererService().render(drawingView.getGraphics(), currentShape, false);
                         break;
                     case Rectangle:
                         currentShape = new Rectangle(start);
                         currentShape.setColor(appService.getColor());
                         currentShape.setThickness(appService.getThickness());
-                        currentShape.setLineStyle(drawing.getLineStyle());
                         currentShape.getRendererService().render(drawingView.getGraphics(), currentShape, false);
                         break;
                     case Text:
                         currentShape = new Text(start);
                         currentShape.setColor(appService.getColor());
-                        currentShape.setThickness(appService.getThickness());
-                        currentShape.setLineStyle(drawing.getLineStyle());
+                        currentShape.setThickness(appService.getThickness());;
                         currentShape.setText(drawing.getText());
                         currentShape.getRendererService().render(drawingView.getGraphics(), currentShape, true);
                         appService.setDrawMode(DrawMode.MousePressed);
@@ -115,7 +112,6 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
                         currentShape = new Ellipse(start);
                         currentShape.setColor(appService.getColor());
                         currentShape.setThickness(appService.getThickness());
-                        currentShape.setLineStyle(drawing.getLineStyle());
                         currentShape.getRendererService().render(drawingView.getGraphics(), currentShape, false);
                         break;
                     case Image:
@@ -123,7 +119,6 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
                         currentShape.setImageFilename(drawing.getImageFilename());
                         currentShape.setColor(appService.getColor());
                         currentShape.setThickness(appService.getThickness());
-                        currentShape.setLineStyle(drawing.getLineStyle());
                 }
 
 /*                if(currentShape!=null) {

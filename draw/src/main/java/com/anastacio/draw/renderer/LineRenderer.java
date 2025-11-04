@@ -20,6 +20,7 @@ public class LineRenderer extends ShapeRenderer {
         int height = shape.getHeight();
 
         Graphics2D g2 = (Graphics2D) g;
+        Stroke originalStroke = g2.getStroke();
         g2.setStroke(getStroke(shape));
 
         if(xor) {
@@ -32,6 +33,7 @@ public class LineRenderer extends ShapeRenderer {
                 g2.setColor(shape.getColor());
             }
             g2.drawLine(x,y,x+width, y+height);
+            g2.setStroke(originalStroke);
             super.render(g, shape, xor);
         }
     }

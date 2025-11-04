@@ -7,10 +7,12 @@ import com.anastacio.drawfx.service.AppService;
 public class DeleteShapeCommand implements Command {
     private final AppService appService;
     private final Shape shape;
+    private final boolean wasSelected;
 
     public DeleteShapeCommand(AppService appService, Shape shape) {
         this.appService = appService;
         this.shape = shape;
+        this.wasSelected = shape.isSelected();
     }
 
     @Override
@@ -21,6 +23,9 @@ public class DeleteShapeCommand implements Command {
     @Override
     public void undo() {
         appService.getDrawing().getShapes().add(shape);
+        if (wasSelected) {
+            appService.select(shape);
+        }
     }
 
     @Override

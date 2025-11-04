@@ -11,6 +11,9 @@ public class CommandService {
         undoStack.push(command);
         redoStack.clear();
         System.out.println("EXECUTE: Command added to undo stack. Stack size: " + undoStack.size());
+
+
+
     }
 
     public static void undo() {

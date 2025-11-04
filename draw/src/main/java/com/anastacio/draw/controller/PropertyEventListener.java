@@ -19,11 +19,11 @@ public class PropertyEventListener extends PropertyEventAdapter {
     public PropertyEventListener(AppService appService) {
         this(appService, null, null);
     }
-    
+
     public PropertyEventListener(AppService appService, DrawingView drawingView) {
         this(appService, drawingView, null);
     }
-    
+
     public PropertyEventListener(AppService appService, DrawingView drawingView, PropertySheet propertySheet) {
         this.appService = appService;
         this.drawingView = drawingView;
@@ -85,7 +85,7 @@ public class PropertyEventListener extends PropertyEventAdapter {
                 int alpha = (int) property.getValue();
                 Color currentColor = selectedShape.getColor();
                 if (currentColor != null) {
-                    Color newColor = new Color(currentColor.getRed(), currentColor.getGreen(), 
+                    Color newColor = new Color(currentColor.getRed(), currentColor.getGreen(),
                         currentColor.getBlue(), alpha);
                     appService.setColor(newColor);
                 }
@@ -96,7 +96,7 @@ public class PropertyEventListener extends PropertyEventAdapter {
                 int alpha = (int) property.getValue();
                 Color currentColor = selectedShape.getFill();
                 if (currentColor != null) {
-                    Color newColor = new Color(currentColor.getRed(), currentColor.getGreen(), 
+                    Color newColor = new Color(currentColor.getRed(), currentColor.getGreen(),
                         currentColor.getBlue(), alpha);
                     appService.setFill(newColor);
                 }
@@ -107,7 +107,7 @@ public class PropertyEventListener extends PropertyEventAdapter {
                 int alpha = (int) property.getValue();
                 Color currentColor = selectedShape.getStartColor();
                 if (currentColor != null) {
-                    Color newColor = new Color(currentColor.getRed(), currentColor.getGreen(), 
+                    Color newColor = new Color(currentColor.getRed(), currentColor.getGreen(),
                         currentColor.getBlue(), alpha);
                     appService.setStartColor(newColor);
                 }
@@ -118,22 +118,15 @@ public class PropertyEventListener extends PropertyEventAdapter {
                 int alpha = (int) property.getValue();
                 Color currentColor = selectedShape.getEndColor();
                 if (currentColor != null) {
-                    Color newColor = new Color(currentColor.getRed(), currentColor.getGreen(), 
+                    Color newColor = new Color(currentColor.getRed(), currentColor.getGreen(),
                         currentColor.getBlue(), alpha);
                     appService.setEndColor(newColor);
                 }
             }
-        } else if (property.getName().equals("Line Style")) {
-            Item item = (Item) property.getValue();
-            String lineStyle = (String) item.getValue();
-            appService.setLineStyle(lineStyle);
-            if (propertySheet != null) {
-                propertySheet.populateTable(appService);
-            }
         } else if (property.getName().equals("Pinned")) {
             appService.setIsPinned((Boolean) property.getValue());
         }
-        
+
         if (drawingView != null) {
             drawingView.repaint();
         }

@@ -20,6 +20,7 @@ public class EllipseRenderer extends ShapeRenderer {
         int height = shape.getHeight();
 
         Graphics2D g2 = (Graphics2D) g;
+        Stroke originalStroke = g2.getStroke();
         g2.setStroke(getStroke(shape));
 
         if (xor) {
@@ -45,6 +46,7 @@ public class EllipseRenderer extends ShapeRenderer {
             }
         }
         g2.drawOval(x, y, width, height);
+        g2.setStroke(originalStroke);
         super.render(g, shape, xor);
     }
 

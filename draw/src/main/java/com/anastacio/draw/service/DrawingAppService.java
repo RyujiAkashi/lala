@@ -283,27 +283,7 @@ public class DrawingAppService implements AppService {
         }
     }
 
-    @Override
-    public void setLineStyle(String lineStyle) {
-        Shape selectedShape = drawing.getSelectedShape();
-        if(selectedShape == null ){
-            drawing.setLineStyle(lineStyle);
-        }
-        else {
-            selectedShape.setLineStyle(lineStyle);
-        }
-    }
 
-    @Override
-    public String getLineStyle() {
-        Shape selectedShape = drawing.getSelectedShape();
-        if(selectedShape == null ){
-           return drawing.getLineStyle();
-        }
-        else {
-            return selectedShape.getLineStyle();
-        }
-    }
 
     @Override
     public void setXLocation(int x) {
